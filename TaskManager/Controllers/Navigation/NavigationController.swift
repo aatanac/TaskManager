@@ -1,0 +1,86 @@
+//
+//  NavigationViewController.swift
+//  TaskManager
+//
+//  Created by Aleksandar Atanackovic on 12/14/17.
+//  Copyright © 2017 Aleksandar Atanackovic. All rights reserved.
+//
+
+import UIKit
+
+final class NavigationController: UINavigationController {
+
+    // on setup of navigation controller first controller is not setup as root
+    // it is imported in viewcontrollers array for setting up initial appearance of navBar
+    override var viewControllers: [UIViewController] {
+        didSet {
+            if oldValue.count == 0,
+                let vc = self.viewControllers.first {
+                self.configure(for: vc)
+            }
+        }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.delegate = self
+        // Do any additional setup after loading the view.
+    }
+
+    // all configuration of navigationBar is in navigation vc
+    // controller does not know what is happening
+    private func configure(for vc: UIViewController) {
+
+        switch vc {
+        case is TasksViewController:
+            self.configureTaskVc(vc)
+
+        case is MenuViewController:
+            self.setNavBar(hidden: true)
+
+        case is SingleTaskViewController:
+            self.configureMenuBtn(for: vc)
+
+        default:
+            print(vc.self)
+
+        }
+    }
+
+    // separating configuring navigation bar for task vc
+    private func configureTaskVc(_ vc: UIViewController) {
+        vc.title = "Tasks"
+        self.setNavBar(hidden: false)
+
+        if #available(iOS 11.0, *) {
+            vc.navigationItem.hidesSearchBarWhenScrolling = false
+            vc.navigationController?.navigationBar.prefersLargeTitles = false
+        }
+        self.configureMenuBtn(for: vc)
+    }
+
+    private func configureMenuBtn(for vc: UIViewController) {
+        vc.navigationItem.leftItemsSupplementBackButton = true
+        // menu items has action that is pointing to swreveals method for opeing/closing menu
+        let menuBtn = UIBarButtonItem(image: Image.menu.image, style: .plain, target: self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)))
+        vc.navigationItem.leftBarButtonItems = [menuBtn]
+    }
+
+    // avoid repeat code for hidding navBar
+    private func setNavBar(hidden: Bool) {
+        if #available(iOS 11.0, *) {
+            self.navigationBar.prefersLargeTitles = !hidden
+        }
+        self.setNavigationBarHidden(hidden, animated: true)
+    }
+
+}
+
+extension NavigationController: UINavigationControllerDelegate {
+
+    // with confirming to delegate and using this delegate method all logic is transfered out of controllers
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        self.configure(for: viewController)
+    }
+
+}

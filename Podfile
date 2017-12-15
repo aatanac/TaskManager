@@ -3,6 +3,6 @@ use_frameworks!
 
 target 'TaskManager' do
   pod 'Alamofire', '~> 4.5'
-  pod 'Realm'
+  pod 'RealmSwift'
   pod 'Moya'
 end

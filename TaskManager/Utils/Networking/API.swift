@@ -11,11 +11,14 @@ import Moya
 
 class API {
 
-    static let provider = MoyaProvider<Service>()
+    static let provider = MoyaProvider<Service>(plugins: [CredentialsPlugin { _ -> URLCredential? in
+        return URLCredential(user: Service.username, password: Service.password, persistence: .none)
+        }
+    ])
 
     static func request<T:Codable>(target: Service, object:T.Type,_  completion: @escaping ((Result<T, ServiceError>) -> Void)) {
 
-        provider.request(target) { (result) in
+        self.provider.request(target) { (result) in
             switch result {
             case .success(let response):
                 guard (200...300).contains(response.statusCode) else {
@@ -27,11 +30,11 @@ class API {
                     let value = try decoder.decode(T.self, from: response.data)
                     return completion(.success(value))
                 } catch let error {
-                    return completion(.failure(.unknown(error: error)))
+                    return completion(.failure(.error(error)))
                 }
 
             case .failure(let error):
-                return completion(.failure(.unknown(error: error)))
+                return completion(.failure(.error(error)))
 
             }
         }
