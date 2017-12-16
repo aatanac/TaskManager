@@ -12,6 +12,15 @@ public struct Font {
 
     enum OpenSans: String, FontAsset {
         case bold = "OpenSans-Bold"
+        case boldItalic = "OpenSans-BoldItalic"
+        case extraBold = "OpenSans-ExtraBold"
+        case extraBoldItalic = "OpenSans-ExtraBoldItalic"
+        case italic = "OpenSans-Italic"
+        case light = "OpenSans-Light"
+        case lightItalic = "OpenSans-LightItalic"
+        case regular = "OpenSans-Regular"
+        case semiBold = "OpenSans-SemiBold"
+        case semiBoldItalic = "OpenSans-SemiBoldItalic"
 
         var name: String {
             return self.rawValue

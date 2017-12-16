@@ -11,12 +11,13 @@ import Moya
 
 enum Service {
     case tasks
+    case projects
 }
 
 extension Service: TargetType {
 
     // access token used as user name
-    static let username = "twp_37mDj6P5VRiC11wDz3s3342sK8iE"
+    static let username = "twp_TEbBXGCnvl2HfvXWfkLUlzx92e3T"
     // password can be anything
     static let password = "test"
 
@@ -29,17 +30,21 @@ extension Service: TargetType {
         switch self {
         case .tasks:
             return header
+        case .projects:
+            return header
         }
     }
 
     var baseURL: URL {
-        return URL(string:"https://aatanac.teamwork.com")!
+        return URL(string:"https://yat.teamwork.com")!
     }
 
     var path: String {
         switch self {
         case .tasks:
             return "/tasks.json"
+        case .projects:
+            return  "/projects.json"
         }
     }
 
@@ -47,12 +52,16 @@ extension Service: TargetType {
         switch self {
         case .tasks:
             return Moya.Method.get
+        case .projects:
+            return Moya.Method.get
         }
     }
 
     var task: Task {
         switch self {
         case .tasks:
+            return .requestPlain
+        case .projects:
             return .requestPlain
         }
     }

@@ -8,17 +8,16 @@
 
 import UIKit
 
-final class TasksViewController: UITableViewController {
+final class TasksViewController: BaseTableViewController {
 
     let viewModel = TasksViewModel()
-    var searchController: UISearchController!
 
     var onTaskSelected: ((_ task: TaskItem) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        super.configureUI()
         self.configureTableView()
-        self.configureUI()
         self.handleData()
     }
 
@@ -26,31 +25,9 @@ final class TasksViewController: UITableViewController {
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
 
-    private func configureUI() {
-
-        self.clearsSelectionOnViewWillAppear = false
-
-        self.searchController = UISearchController(searchResultsController: nil)
-        self.searchController.hidesNavigationBarDuringPresentation = true
-        self.searchController.dimsBackgroundDuringPresentation = true
-        self.searchController.searchBar.searchBarStyle = .minimal
-        self.searchController.searchBar.sizeToFit()
-
-        self.searchController.searchResultsUpdater = self.viewModel
-        self.searchController.searchBar.delegate = self
-
-        if #available(iOS 11.0, *) {
-            // For iOS 11 and later, pretty animation
-            self.navigationItem.searchController = self.searchController
-            // Search bar visible all the time
-        } else {
-            // For iOS 10 and earlier
-            self.tableView.tableHeaderView = searchController.searchBar
-        }
-
-    }
-
     private func handleData() {
+        self.searchController.searchResultsUpdater = self.viewModel
+
         self.viewModel.onReloadData = { [weak self] in
             self?.tableView.reloadData()
         }
@@ -83,14 +60,6 @@ final class TasksViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = self.viewModel.item(for: indexPath)
         self.onTaskSelected?(item)
-    }
-
-}
-
-// MARK: - UISearchBarDelegate
-extension TasksViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
     }
 
 }

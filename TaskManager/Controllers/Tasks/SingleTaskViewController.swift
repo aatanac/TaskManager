@@ -8,7 +8,15 @@
 
 import UIKit
 
-class SingleTaskViewController: BaseTableViewController {
+class SingleTaskViewController: UIViewController {
+
+    let tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        // removing empty cell separators
+        tableView.tableFooterView = UIView(frame: .zero)
+        return tableView
+    }()
 
     var viewModel: SingleTaskViewModel!
 
@@ -25,6 +33,19 @@ class SingleTaskViewController: BaseTableViewController {
         super.viewDidLoad()
         self.configureUI()
         self.configureTableView()
+    }
+
+    func configureUI() {
+        self.view.backgroundColor = UIColor.white
+        self.view.addSubview(self.tableView)
+
+        NSLayoutConstraint.activate([
+            self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            ])
+
     }
 
     private func configureTableView() {

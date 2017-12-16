@@ -23,8 +23,21 @@ final class NavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.subscribeToNotification()
         self.delegate = self
-        // Do any additional setup after loading the view.
+        self.navigationBar.isTranslucent = false
+    }
+
+    private func subscribeToNotification() {
+        NotificationCenter.default.addObserver(forName: Notification.Name.apllyTheme, object: nil, queue: .main) { [weak self] (_) in
+            let theme = ThemeManager.currentTheme()
+            self?.navigationBar.barTintColor = theme.color
+            self?.navigationBar.tintColor = theme.barItemsColor
+        }
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // all configuration of navigationBar is in navigation vc
@@ -33,13 +46,27 @@ final class NavigationController: UINavigationController {
 
         switch vc {
         case is TasksViewController:
-            self.configureTaskVc(vc)
+            vc.title = "Tasks"
+            self.configureNavBar(vc)
 
         case is MenuViewController:
             self.setNavBar(hidden: true)
 
         case is SingleTaskViewController:
             self.configureMenuBtn(for: vc)
+            vc.title = "Task"
+
+        case is ProjectsViewController:
+            self.configureNavBar(vc)
+            vc.title = "Projects"
+
+        case is TestViewController:
+            self.configureMenuBtn(for: vc)
+            vc.title = "Not finished"
+
+        case is ColorViewController:
+            self.configureMenuBtn(for: vc)
+            vc.title = "Themes"
 
         default:
             print(vc.self)
@@ -48,8 +75,7 @@ final class NavigationController: UINavigationController {
     }
 
     // separating configuring navigation bar for task vc
-    private func configureTaskVc(_ vc: UIViewController) {
-        vc.title = "Tasks"
+    private func configureNavBar(_ vc: UIViewController) {
         self.setNavBar(hidden: false)
 
         if #available(iOS 11.0, *) {

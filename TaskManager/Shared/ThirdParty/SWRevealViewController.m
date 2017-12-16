@@ -631,7 +631,7 @@ const int FrontViewPositionNone = 0xff;
 }
 
 
-- (id)initWithRearViewController:(UIViewController *)rearViewController frontViewController:(UIViewController *)frontViewController;
+- (id)initWithRearViewController:(UIViewController *_Nullable)rearViewController frontViewController:(UIViewController *_Nullable)frontViewController;
 {
     self = [super init];
     if ( self )

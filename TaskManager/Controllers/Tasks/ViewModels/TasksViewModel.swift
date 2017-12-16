@@ -9,41 +9,18 @@
 import Foundation
 import UIKit
 
-final class TasksViewModel: NSObject {
+final class TasksViewModel: NSObject, ViewModel {
 
-    typealias TaksBlock = ((ServiceError?) -> Void)
+    var service: Service = Service.tasks
 
-    private var tasks: [TaskItem] = [] {
-        didSet {
-            self.onReloadData?()
-        }
-    }
+    typealias ItemType = TaskItem
 
     var onReloadData: (() -> Void)?
 
-    var numberOfRows: Int {
-        return self.tasks.count
-    }
-
-    func refreshData(completion: @escaping TaksBlock) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-
-        API.request(target: Service.tasks, object: Wrapper<TaskItem>.self) { [weak self] (result) in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-
-            switch result {
-            case .success(let wrapper):
-                self?.tasks = wrapper.items
-            case .failure(let error):
-                completion(error)
-            }
+    internal var items: [TaskItem] = [] {
+        didSet {
+            self.onReloadData?()
         }
-
-    }
-
-    func item(for indexPath: IndexPath) -> TaskItem {
-        let item = self.tasks[indexPath.row]
-        return item
     }
 
 }

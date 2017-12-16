@@ -43,6 +43,7 @@ extension ImageAsset {
         return image
     }
 
+    // template image
     var imageTemplate: UIImage {
         return self.image.withRenderingMode(.alwaysTemplate)
     }

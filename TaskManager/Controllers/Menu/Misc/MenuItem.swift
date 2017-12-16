@@ -15,7 +15,7 @@ public enum MenuItem: String {
     case shortcuts = "Shortcuts"
     case tasks = "Tasks"
     case messages = "Messages"
-    case milestones = "Mlestones"
+    case milestones = "Milestones"
     case statuses = "Statuses"
     case people = "People"
     case events = "Events"
@@ -28,27 +28,27 @@ public enum MenuItem: String {
     var icon: UIImage {
         switch self {
         case .dashboard:
-            return UIImage()
+            return Image.dashboard.image
         case .project:
-            return UIImage()
+            return Image.projects.image
         case .latestActivity:
-            return UIImage()
+            return Image.activity.image
         case .shortcuts:
-            return UIImage()
+            return Image.shortcut.image
         case .tasks:
-            return UIImage()
+            return Image.tasks.image
         case .messages:
-            return UIImage()
+            return Image.message.image
         case .milestones:
-            return UIImage()
+            return Image.milestone.image
         case .statuses:
-            return UIImage()
+            return Image.status.image
         case .people:
-            return UIImage()
+            return Image.people.image
         case .events:
-            return UIImage()
+            return Image.events.image
         case .loggedTime:
-            return UIImage()
+            return Image.loggedTime.image
         }
     }
 

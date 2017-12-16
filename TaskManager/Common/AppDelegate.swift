@@ -14,11 +14,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var coordinator: AppCoordinator!
 
+    // MARK: App Lifecycle
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-
+        
         self.window = UIWindow()
         self.window?.makeKeyAndVisible()
+        ThemeManager.configure()
+
         self.coordinator = AppCoordinator(window: self.window!)
         self.coordinator.start()
         

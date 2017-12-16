@@ -10,6 +10,18 @@ import Foundation
 
 public enum Image: String, ImageAsset {
     case menu
+    case projects
+    case dashboard
+    case activity
+    case events
+    case loggedTime
+    case message
+    case milestone
+    case people
+    case shortcut
+    case status
+    case tasks
+    case tick
 
     var name: String {
         return self.rawValue

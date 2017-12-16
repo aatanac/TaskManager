@@ -8,31 +8,47 @@
 
 import UIKit
 
-class BaseTableViewController: UIViewController {
+class BaseTableViewController: UITableViewController {
 
-    let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        // removing empty cell separators
-        tableView.tableFooterView = UIView(frame: .zero)
-        return tableView
-    }()
+    var searchController: UISearchController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
     func configureUI() {
-        self.view.backgroundColor = UIColor.white
-        self.view.addSubview(self.tableView)
 
-        NSLayoutConstraint.activate([
-            self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-            ])
+        self.clearsSelectionOnViewWillAppear = false
+
+        self.searchController = UISearchController(searchResultsController: nil)
+        self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.dimsBackgroundDuringPresentation = true
+        self.searchController.searchBar.searchBarStyle = .minimal
+        self.searchController.searchBar.sizeToFit()
+        //
+        self.searchController.searchBar.tintColor = .white
+
+        self.searchController.searchBar.delegate = self
+
+        if #available(iOS 11.0, *) {
+            // For iOS 11 and later, pretty animation
+            self.navigationItem.searchController = self.searchController
+            // Search bar visible all the time
+        } else {
+            // For iOS 10 and earlier
+            self.tableView.tableHeaderView = searchController.searchBar
+        }
 
     }
 
 }
+
+// MARK: - UISearchBarDelegate
+extension BaseTableViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
+}
+
