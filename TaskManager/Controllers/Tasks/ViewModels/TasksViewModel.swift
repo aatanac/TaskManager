@@ -11,7 +11,7 @@ import UIKit
 
 final class TasksViewModel: NSObject, ViewModel {
 
-    var service: Service = Service.tasks
+    var service: Service = Service.tasks(params: nil)
 
     typealias ItemType = TaskItem
 

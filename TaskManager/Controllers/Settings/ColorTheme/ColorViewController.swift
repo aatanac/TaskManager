@@ -85,6 +85,23 @@ final class ColorViewController: UIViewController {
             guard let weakSelf = self else { return }
             weakSelf.viewModel.applyTheme(weakSelf.theme)
         }
+
+        self.loadingBtn.onPressed = { [weak self] in
+            self?.makeRequest()
+        }
+
+    }
+
+    func makeRequest() {
+        let service = Service.tasksEdit(method: .post, taskListID: 1429846, params: [:])
+        API.request(target: service, object: Response.self) { (result) in
+            switch result {
+            case .success(_):
+                print("Yessssss!!!!!!")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 
     private func configureCollectionView() {
@@ -97,6 +114,10 @@ final class ColorViewController: UIViewController {
 
     private func applyTheme() {
         self.loadingBtn.backgroundColor = self.theme.color
+    }
+
+    deinit {
+        print("Deinit:  ", self)
     }
 
 }

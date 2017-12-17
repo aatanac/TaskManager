@@ -53,7 +53,7 @@ final class NavigationController: UINavigationController {
             self.setNavBar(hidden: true)
 
         case is SingleTaskViewController:
-            self.configureMenuBtn(for: vc)
+            self.configureBtns(for: vc)
             vc.title = "Task"
 
         case is ProjectsViewController:
@@ -61,11 +61,11 @@ final class NavigationController: UINavigationController {
             vc.title = "Projects"
 
         case is TestViewController:
-            self.configureMenuBtn(for: vc)
+            self.configureBtns(for: vc)
             vc.title = "Not finished"
 
         case is ColorViewController:
-            self.configureMenuBtn(for: vc)
+            self.configureBtns(for: vc)
             vc.title = "Themes"
 
         default:
@@ -82,14 +82,19 @@ final class NavigationController: UINavigationController {
             vc.navigationItem.hidesSearchBarWhenScrolling = false
             vc.navigationController?.navigationBar.prefersLargeTitles = false
         }
-        self.configureMenuBtn(for: vc)
+        self.configureBtns(for: vc)
     }
 
-    private func configureMenuBtn(for vc: UIViewController) {
+    private func configureBtns(for vc: UIViewController) {
         vc.navigationItem.leftItemsSupplementBackButton = true
-        // menu items has action that is pointing to swreveals method for opeing/closing menu
+        
+        // menu item has action that points to swreveals method for opeing/closing menu
         let menuBtn = UIBarButtonItem(image: Image.menu.image, style: .plain, target: self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)))
         vc.navigationItem.leftBarButtonItems = [menuBtn]
+
+        let settingsBtn = UIBarButtonItem(image: Image.settings.image, style: .plain, target: self.revealViewController(), action: #selector(SWRevealViewController.rightRevealToggle(_:)))
+        vc.navigationItem.rightBarButtonItems = [settingsBtn]
+
     }
 
     // avoid repeat code for hidding navBar

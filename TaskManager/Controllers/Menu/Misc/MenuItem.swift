@@ -9,6 +9,7 @@
 import Foundation
 
 public enum MenuItem: String {
+
     case dashboard = "Dashboard"
     case project = "Project"
     case latestActivity = "Latest Activity"
@@ -20,6 +21,7 @@ public enum MenuItem: String {
     case people = "People"
     case events = "Events"
     case loggedTime = "Logged Time"
+    case colorTheme = "Theme"
 
     var title: String {
         return self.rawValue
@@ -49,6 +51,21 @@ public enum MenuItem: String {
             return Image.events.image
         case .loggedTime:
             return Image.loggedTime.image
+        case .colorTheme:
+            return Image.colorTheme.image
+        }
+    }
+
+    var vcType: AnyClass {
+        switch self {
+        case .colorTheme:
+            return ColorViewController.self
+        case .project:
+            return ProjectsViewController.self
+        case .tasks:
+            return TasksViewController.self
+        default:
+            return TestViewController.self
         }
     }
 

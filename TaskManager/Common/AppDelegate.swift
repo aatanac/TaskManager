@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window = UIWindow()
         self.window?.makeKeyAndVisible()
+        DBManager.configure()
         ThemeManager.configure()
 
         self.coordinator = AppCoordinator(window: self.window!)

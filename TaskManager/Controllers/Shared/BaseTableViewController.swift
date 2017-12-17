@@ -17,17 +17,14 @@ class BaseTableViewController: UITableViewController {
     }
 
     func configureUI() {
-
+        self.tableView.separatorStyle = .none
         self.clearsSelectionOnViewWillAppear = false
 
         self.searchController = UISearchController(searchResultsController: nil)
         self.searchController.hidesNavigationBarDuringPresentation = true
         self.searchController.dimsBackgroundDuringPresentation = true
-        self.searchController.searchBar.searchBarStyle = .minimal
+        self.searchController.searchBar.searchBarStyle = .prominent
         self.searchController.searchBar.sizeToFit()
-        //
-        self.searchController.searchBar.tintColor = .white
-
         self.searchController.searchBar.delegate = self
 
         if #available(iOS 11.0, *) {
@@ -39,6 +36,10 @@ class BaseTableViewController: UITableViewController {
             self.tableView.tableHeaderView = searchController.searchBar
         }
 
+    }
+    
+    deinit {
+        print("Deinit:  ", self)
     }
 
 }

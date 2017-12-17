@@ -101,6 +101,8 @@ final class LoadingBtn: UIControl {
         self.changeState()
         self.onPressed?()
 
+        // fake request to server, would be made in viewModel of controller
+        // for simplicty is set here
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.changeState()
         }

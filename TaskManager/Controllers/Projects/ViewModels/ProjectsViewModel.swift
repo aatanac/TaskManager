@@ -10,7 +10,7 @@ import Foundation
 
 final class ProjectsViewModel: NSObject, ViewModel {
 
-    var service: Service = Service.projects
+    var service: Service = Service.projects(params: ["status": ProjectStatus.active.rawValue])
 
     typealias ItemType = Project
 

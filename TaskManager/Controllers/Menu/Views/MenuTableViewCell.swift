@@ -34,6 +34,17 @@ class MenuTableViewCell: UITableViewCell {
         }
     }
 
+    var type: MenuType = .menu {
+        didSet {
+            if self.type == .settings {
+                self.label.textAlignment = self.type.textAlignment
+                self.leadingConstraint?.isActive = false
+            }
+        }
+    }
+
+    var leadingConstraint: NSLayoutConstraint?
+
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.configureUI()
@@ -48,11 +59,12 @@ class MenuTableViewCell: UITableViewCell {
         self.backgroundColor = .clear
 
         self.contentView.addSubview(self.imageIcon)
+        self.leadingConstraint = self.imageIcon.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16)
         NSLayoutConstraint.activate([
             self.imageIcon.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
             self.imageIcon.heightAnchor.constraint(equalToConstant: 20),
             self.imageIcon.widthAnchor.constraint(equalToConstant: 20),
-            self.imageIcon.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16)
+            self.leadingConstraint!
             ])
 
         self.contentView.addSubview(self.label)

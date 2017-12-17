@@ -10,8 +10,13 @@ import Foundation
 
 class MenuViewModel {
 
-    private let items: [MenuItem] = [.dashboard, .project, .latestActivity, .shortcuts, .tasks, .messages, .milestones, .statuses, .people, .events, .loggedTime]
+    var type: MenuType
+    private var items: [MenuItem]
 
+    init(type: MenuType) {
+        self.type = type
+        self.items = type.items
+    }
     var numberOfItems: Int {
         return self.items.count
     }

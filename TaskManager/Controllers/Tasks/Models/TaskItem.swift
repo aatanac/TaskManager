@@ -10,6 +10,15 @@ import Foundation
 import Realm
 import RealmSwift
 
+struct Response: Codable {
+    var status: String
+
+    enum CodingKeys: String, CodingKey {
+        case status = "STATUS"
+    }
+
+}
+
 class TaskItem: Object, Codable {
 
     @objc dynamic var id: Int = 0

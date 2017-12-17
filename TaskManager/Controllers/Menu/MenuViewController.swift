@@ -10,11 +10,9 @@ import UIKit
 
 class MenuViewController: UIViewController {
 
-    let viewModel = MenuViewModel()
+    var viewModel: MenuViewModel
 
-    var selectedIndexPath: IndexPath?
-
-    var onItemSelected: ((_ item: MenuItem?) -> Void)?
+    var onItemSelected: ((_ item: MenuItem) -> Void)?
 
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -32,6 +30,15 @@ class MenuViewController: UIViewController {
         }
     }
 
+    init(type: MenuType) {
+        self.viewModel = MenuViewModel(type: type)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureUI()
@@ -74,12 +81,6 @@ class MenuViewController: UIViewController {
 extension MenuViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let selectedItem = self.selectedIndexPath,
-            selectedItem.row == indexPath.row {
-            self.onItemSelected?(nil)
-            return
-        }
-        self.selectedIndexPath = indexPath
         let item = self.viewModel.item(for: indexPath)
         self.onItemSelected?(item)
     }
@@ -105,6 +106,7 @@ extension MenuViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuTableViewCell", for: indexPath) as! MenuTableViewCell
         let item = self.viewModel.item(for: indexPath)
         cell.item = item
+        cell.type = self.viewModel.type
         return cell
     }
 

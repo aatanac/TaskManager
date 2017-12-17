@@ -9,6 +9,7 @@ import Foundation
 import RealmSwift
 
 class Project: Object, Codable {
+
 	@objc dynamic var company: Company?
 	@objc dynamic var starred: Bool = false
 	@objc dynamic var name: String = ""
@@ -73,5 +74,9 @@ class Project: Object, Codable {
 		self.endDate = try values.decode(String.self, forKey: .endDate)
 		self.harvestTimersOnabled = try values.decode(Bool.self, forKey: .harvestTimersOnabled)
 	}
+
+    override static func primaryKey() -> String? {
+        return "id"
+    }
 
 }

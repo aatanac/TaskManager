@@ -24,38 +24,64 @@ final class AppCoordinator: NSObject, RootCoordinator {
     convenience init(window: UIWindow) {
         self.init()
         self.window = window
-        self.configureNavigation()
     }
 
     // setuping menu and home controller
     func start() {
-        let vc = self.configureTasksVc()
+        let vc = SplashViewController()
+        vc.onFinish = { [weak self] in
+            self?.moveForward()
+        }
 
-        self.revealController.rearViewController = self.configureMenuVc()
-        self.revealController.frontViewController = vc
+        self.window.rootViewController = vc
+
+    }
+
+    private func moveForward() {
+
+        // taking shapshot to prepaire for animation
+        guard let snap = self.window.snapshotView(afterScreenUpdates: true) else {
+            self.configureStartNavigation()
+            return
+        }
+
+        self.configureStartNavigation()
+        self.window.addSubview(snap)
+
+        var newFrame = snap.frame
+        newFrame.origin.y = snap.frame.size.height * 2
+
+        UIView.animate(withDuration: 0.33, delay: 0, options: .curveEaseIn, animations: {
+            snap.frame = newFrame
+            snap.alpha = 0
+        }, completion: nil)
+
     }
 
     // setup reveal controller as root vc of app
-    private func configureNavigation() {
+    private func configureStartNavigation() {
         self.revealController = SWRevealViewController()
         self.revealController.delegate = self
         self.revealController.configure()
-        self.window.rootViewController = self.revealController
 
+        let vc = self.configureProjectsVc()
+
+        self.revealController.rearViewController = self.configureMenuVc(type: .menu)
+        self.revealController.rightViewController = self.configureMenuVc(type: .settings)
+        self.revealController.frontViewController = vc
+
+        self.window.rootViewController = self.revealController
     }
 
+
     // configuring side menu controller, one time in app
-    private func configureMenuVc() -> MenuViewController{
-        let menuVc = MenuViewController()
+    private func configureMenuVc(type: MenuType) -> MenuViewController{
+        let menuVc = MenuViewController(type: type)
 
         // returning selected item from controller
         // if controller is already selected closing animation appears
         menuVc.onItemSelected = { [weak self] item in
-            if let menuItem = item {
-                self?.showVc(for: menuItem)
-            } else {
-                self?.revealController.setFrontViewPosition(.left, animated: true)
-            }
+            self?.showVc(for: item)
         }
 
         return menuVc
@@ -93,6 +119,17 @@ final class AppCoordinator: NSObject, RootCoordinator {
 
     // showing controllers depenging on selected item in menu
     private func showVc(for item: MenuItem) {
+        print("controller: ", item.title)
+
+        // check if front controller is kind already shown
+        // front controller is wrapped in own navigation controller
+        if let navVc = self.revealController.frontViewController as? NavigationController,
+            let frontVc = navVc.viewControllers.first,
+            type(of: frontVc) == item.vcType {
+            self.revealController.setFrontViewPosition(.left, animated: true)
+            return
+        }
+
         switch item {
         case .tasks:
             let vc = self.configureTasksVc()
@@ -101,7 +138,8 @@ final class AppCoordinator: NSObject, RootCoordinator {
         case .project:
             let vc = self.configureProjectsVc()
             self.revealController.pushFrontViewController(vc, animated: true)
-        case .dashboard:
+
+        case .colorTheme:
             let vc = self.configureColorVc()
             self.revealController.pushFrontViewController(vc, animated: true)
 
@@ -110,7 +148,6 @@ final class AppCoordinator: NSObject, RootCoordinator {
             self.revealController.pushFrontViewController(nc, animated: true)
 
         }
-        print("controller: ", item.title)
 
     }
 

@@ -32,6 +32,8 @@ class ThemeManager {
         navigationBarAppearace.tintColor = theme.barItemsColor
         navigationBarAppearace.titleTextAttributes = [NSAttributedStringKey.foregroundColor: theme.barItemsColor, NSAttributedStringKey.font: Font.OpenSans.bold.font(size: 16)]
 
+        UISearchBar.appearance().tintColor = theme.barItemsColor
+
         NotificationCenter.default.post(name: Notification.Name.apllyTheme, object: nil)
     }
 

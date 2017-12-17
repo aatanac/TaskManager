@@ -25,4 +25,8 @@ class Category: Object, Codable {
 		self.id = try values.decode(String.self, forKey: .id)
 	}
 
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+
 }
