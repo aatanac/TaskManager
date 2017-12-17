@@ -13,10 +13,12 @@ class TaskList: Object, Codable {
 
     @objc dynamic var id: String = ""
     @objc dynamic var desc: String = ""
+    @objc dynamic var name: String = ""
 
     enum CodingKeys: String, CodingKey {
         case id
         case desc = "description"
+        case name
     }
 
     convenience required init(from decoder: Decoder) throws {
@@ -24,6 +26,7 @@ class TaskList: Object, Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(String.self, forKey: .id)
         self.desc = try values.decode(String.self, forKey: .desc)
+        self.name = try values.decode(String.self, forKey: .name)
         if self.desc == "" {
             // used from app
             self.desc = "No description"

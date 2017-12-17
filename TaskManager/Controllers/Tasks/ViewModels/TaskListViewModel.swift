@@ -1,19 +1,18 @@
 //
-//  TasksViewModel.swift
+//  TaskListViewModel.swift
 //  TaskManager
 //
-//  Created by Aleksandar Atanackovic on 12/14/17.
+//  Created by Aleksandar Atanackovic on 12/17/17.
 //  Copyright © 2017 Aleksandar Atanackovic. All rights reserved.
 //
 
 import Foundation
-import UIKit
 
-final class TasksViewModel: NSObject, ViewModel {
+final class TaskListViewModel: NSObject, ViewModel {
 
-    var service: Service = Service.tasks(params: nil)
+    var service: Service = Service.taskLists(projectID: nil)
 
-    typealias ItemType = TaskItem
+    typealias ItemType = TaskList
 
     var onReloadData: (() -> Void)?
 
@@ -25,7 +24,7 @@ final class TasksViewModel: NSObject, ViewModel {
 
 }
 
-extension TasksViewModel: UISearchResultsUpdating{
+extension TaskListViewModel: UISearchResultsUpdating{
 
     func updateSearchResults(for searchController: UISearchController) {
         print("change data")

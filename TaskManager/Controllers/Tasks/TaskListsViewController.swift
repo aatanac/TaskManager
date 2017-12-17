@@ -8,28 +8,57 @@
 
 import UIKit
 
-class TaskListsViewController: UIViewController {
+class TaskListsViewController: BaseTableViewController {
+
+    let viewModel = TaskListViewModel()
+
+    var onListSelected: ((_ task: TaskList) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        super.configureUI()
+        self.configureTableView()
+        self.handleData()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    private func configureTableView() {
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
-    
 
-    /*
-    // MARK: - Navigation
+    private func handleData() {
+        self.searchController.searchResultsUpdater = self.viewModel
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        self.viewModel.onReloadData = { [weak self] in
+            self?.tableView.reloadData()
+        }
+
+        self.viewModel.fetchFromDB(query: nil) { (result) in
+            print("Results", result)
+        }
+
     }
-    */
+
+
+    // MARK: - Table view data source
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.viewModel.numberOfRows
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let item = self.viewModel.item(for: indexPath)
+        cell.textLabel?.text = item.name
+
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = self.viewModel.item(for: indexPath)
+        self.onListSelected?(item)
+    }
 
 }

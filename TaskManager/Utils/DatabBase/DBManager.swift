@@ -23,10 +23,10 @@ class DBManager {
         print(config.fileURL ?? "No url!!!")
     }
 
-    func addObjects(objects: [Object], completion: @escaping ErrorBlock) {
+    func addObjects(objects: [Object], completion: ErrorBlock) {
 
         guard objects.count > 0 else {
-            completion(nil)
+            completion?(nil)
             return
         }
 
@@ -37,14 +37,27 @@ class DBManager {
                     realm.add(objects, update: true)
                 }
             }
-            completion(nil)
+            completion?(nil)
         }
     }
 
-    func fetchObjects<T: Object>(objects: T, query: String, completion: @escaping ((Result<[T], Service>) -> Void)) {
+    func fetchObject<T: DataObject>(objects: T.Type, query: String?) -> T? {
+        let realm = try! Realm()
+        var result = realm.objects(T.self)
+        if let queryString = query {
+            result = result.filter(queryString)
+        }
+        return result.first
+    }
+
+    func fetchObjects<T: DataObject>(objects: T.Type, query: String?, completion: @escaping ((Result<[T], Service>) -> Void)) {
 
         let realm = try! Realm()
-        let result = realm.objects(T.self).filter(query)
+        var result = realm.objects(T.self)
+        if let queryString = query {
+            result = result.filter(queryString)
+        }
+
         let array: [T] = result.flatMap{$0}
         
         completion(.success(array))

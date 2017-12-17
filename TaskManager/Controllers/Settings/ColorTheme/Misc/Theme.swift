@@ -25,7 +25,7 @@ enum Theme: Int {
     case magenta
     case orange
 
-    static let defaultTheme: Theme = .darkBlue
+    static let defaultValue = 0
 
     var color: UIColor {
         switch self {

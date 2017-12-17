@@ -24,7 +24,7 @@ class MenuViewController: UIViewController {
         return tableView
     }()
 
-    var backgroundColor: UIColor = ThemeManager.currentTheme().color {
+    var backgroundColor: UIColor = ThemeManager.currentTheme.color {
         didSet {
             self.view.backgroundColor = self.backgroundColor
         }
@@ -66,8 +66,7 @@ class MenuViewController: UIViewController {
 
     private func subscribeToNotification() {
         NotificationCenter.default.addObserver(forName: Notification.Name.apllyTheme, object: nil, queue: OperationQueue.main) { [weak self] (_) in
-            self?.backgroundColor = ThemeManager.currentTheme().color
-
+            self?.backgroundColor = ThemeManager.currentTheme.color
         }
     }
 

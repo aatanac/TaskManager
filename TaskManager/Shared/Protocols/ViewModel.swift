@@ -14,15 +14,16 @@ typealias DataObject = Object & Codable
 // resused for Tasks and Projects
 protocol ViewModel: class {
 
-    associatedtype ItemType: Codable
+    associatedtype ItemType: DataObject
     var service: Service { get set }
     var items: [ItemType] { get set }
     var onReloadData: (() -> Void)? { get set }
-    func refreshData(completion: @escaping ErrorBlock)
+    func refreshData(completion: ErrorBlock)
     func item(for indexPath: IndexPath) -> ItemType
 
 }
 
+// used for all list vieModels
 extension ViewModel {
 
     var numberOfRows: Int {
@@ -34,7 +35,7 @@ extension ViewModel {
         return item
     }
 
-    func refreshData(completion: @escaping ErrorBlock) {
+    func refreshData(completion: ErrorBlock) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
 
         API.request(target: self.service, object: Wrapper<ItemType>.self) { [weak self] (result) in
@@ -44,22 +45,21 @@ extension ViewModel {
             case .success(let wrapper):
                 self?.items = wrapper.items
             case .failure(let error):
-                completion(error)
+                completion?(error)
             }
         }
 
     }
 
-    func fetchData<T: DataObject>(query: String , object: T, completion: @escaping ((Result<[T], Service>) -> Void)) {
+    func fetchFromDB(query: String?, completion: @escaping ((Result<[ItemType], Service>) -> Void)) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
 
-        DBManager.shared.fetchObjects(objects: object, query: query) { [weak self] (result) in
+        DBManager.shared.fetchObjects(objects: ItemType.self, query: query) { [weak self] (result) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
 
             switch result {
             case .success(let dbItems):
-                break
-                //self?.items = dbItems
+                self?.items = dbItems
             case .failure(let error):
                 completion(.failure(error))
             }

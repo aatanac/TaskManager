@@ -10,14 +10,14 @@ import Foundation
 
 class SplashViewModel {
 
-    func fetchStartData(completion: @escaping ErrorBlock) {
+    func fetchStartData(completion: ErrorBlock) {
 
         DataManager.fetchStartData { (error) in
             DispatchQueue.main.async {
                 if let er = error {
-                    completion(er)
+                    completion?(er)
                 } else {
-                    completion(nil)
+                    completion?(nil)
                 }
             }
         }

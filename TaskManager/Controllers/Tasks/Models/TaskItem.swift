@@ -10,15 +10,6 @@ import Foundation
 import Realm
 import RealmSwift
 
-struct Response: Codable {
-    var status: String
-
-    enum CodingKeys: String, CodingKey {
-        case status = "STATUS"
-    }
-
-}
-
 class TaskItem: Object, Codable {
 
     @objc dynamic var id: Int = 0
@@ -77,6 +68,11 @@ class TaskItem: Object, Codable {
         self.status = try values.decode(String.self, forKey: .status)
         self.canEdit = try values.decode(Bool.self, forKey: .canEdit)
 
+    }
+
+
+    override static func primaryKey() -> String? {
+        return "id"
     }
 
 }

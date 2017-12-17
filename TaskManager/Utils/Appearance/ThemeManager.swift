@@ -14,18 +14,25 @@ extension Notification.Name {
 
 class ThemeManager {
 
+    static let shared = ThemeManager()
     static let themeKey = "ThemeKey"
+    private var currentTheme: Theme = .darkBlue
 
     // configure start theme on app launch
     static func configure() {
-        let theme = ThemeManager.currentTheme()
+        let themeValue = DBManager.shared.fetchObject(objects: ThemeObject.self, query: nil)
+        let theme = Theme(rawValue: themeValue?.color ?? Theme.defaultValue)!
+        ThemeManager.shared.currentTheme = theme
         ThemeManager.applyTheme(theme: theme)
     }
 
     // apply theme on navigation bar and items
     static func applyTheme(theme: Theme) {
-        UserDefaults.standard.setValue(theme.rawValue, forKey: themeKey)
-        UserDefaults.standard.synchronize()
+
+        let themeObject = ThemeObject()
+        themeObject.color = theme.rawValue
+        DBManager.shared.addObjects(objects: [themeObject], completion: nil)
+        ThemeManager.shared.currentTheme = theme
 
         let navigationBarAppearace = UINavigationBar.appearance()
         navigationBarAppearace.barTintColor = theme.color
@@ -37,14 +44,9 @@ class ThemeManager {
         NotificationCenter.default.post(name: Notification.Name.apllyTheme, object: nil)
     }
 
-    // saved theme to userdefaults
-    static func currentTheme() -> Theme {
-        let storedTheme = UserDefaults.standard.integer(forKey: themeKey)
-        if let theme = Theme(rawValue: storedTheme) {
-            return theme
-        } else {
-            return Theme.defaultTheme
-        }
-    }   
+    static var currentTheme: Theme {
+        return ThemeManager.shared.currentTheme
+    }
+
 
 }

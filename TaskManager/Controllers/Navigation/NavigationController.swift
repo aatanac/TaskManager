@@ -30,7 +30,7 @@ final class NavigationController: UINavigationController {
 
     private func subscribeToNotification() {
         NotificationCenter.default.addObserver(forName: Notification.Name.apllyTheme, object: nil, queue: .main) { [weak self] (_) in
-            let theme = ThemeManager.currentTheme()
+            let theme = ThemeManager.currentTheme
             self?.navigationBar.barTintColor = theme.color
             self?.navigationBar.tintColor = theme.barItemsColor
         }

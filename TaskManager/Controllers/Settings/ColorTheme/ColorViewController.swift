@@ -41,7 +41,7 @@ final class ColorViewController: UIViewController {
         return loadingBtn
     }()
 
-    private var theme = ThemeManager.currentTheme() {
+    private var theme = ThemeManager.currentTheme {
         didSet {
             self.applyTheme()
         }

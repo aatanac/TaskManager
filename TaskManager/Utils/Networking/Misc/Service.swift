@@ -101,7 +101,8 @@ extension Service: TargetType {
         case .user:
             return .requestPlain
         case .taskLists(projectID: _):
-            return .requestPlain
+            // hardcoded for simplicity
+            return .requestParameters(parameters: ["status": "active"], encoding: URLEncoding.queryString)
         }
     }
 

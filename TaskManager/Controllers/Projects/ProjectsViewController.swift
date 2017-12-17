@@ -29,12 +29,9 @@ class ProjectsViewController: BaseTableViewController {
         self.viewModel.onReloadData = { [weak self] in
             self?.tableView.reloadData()
         }
-        self.refreshData()
-    }
-
-    private func refreshData() {
-        self.viewModel.refreshData { (error) in
-            print(error?.localizedDescription ?? "data received")
+        
+        self.viewModel.fetchFromDB(query: nil) { (result) in
+            print("Results", result)
         }
     }
 

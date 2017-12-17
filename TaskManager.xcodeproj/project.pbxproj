@@ -61,6 +61,8 @@
 		2C4CE06A1FE1A41100F658D1 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4CE0691FE1A41100F658D1 /* Service.swift */; };
 		2C4CE06C1FE1A4C600F658D1 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4CE06B1FE1A4C600F658D1 /* Result.swift */; };
 		2C4CE06E1FE1CAE200F658D1 /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C4CE06D1FE1CAE200F658D1 /* TaskItem.swift */; };
+		2C5469721FE61DE400EA0977 /* ThemeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5469711FE61DE400EA0977 /* ThemeObject.swift */; };
+		2C5469741FE6253100EA0977 /* TaskListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5469731FE6253100EA0977 /* TaskListViewModel.swift */; };
 		2C6D81ED1FE5FFB4007EF91B /* TaskStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6D81EC1FE5FFB4007EF91B /* TaskStatus.swift */; };
 		2C6D81F01FE602E9007EF91B /* TaskListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6D81EF1FE602E9007EF91B /* TaskListsViewController.swift */; };
 		2C6D81F21FE6031B007EF91B /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6D81F11FE6031B007EF91B /* TaskList.swift */; };
@@ -155,6 +157,8 @@
 		2C4CE0691FE1A41100F658D1 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		2C4CE06B1FE1A4C600F658D1 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		2C4CE06D1FE1CAE200F658D1 /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
+		2C5469711FE61DE400EA0977 /* ThemeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeObject.swift; sourceTree = "<group>"; };
+		2C5469731FE6253100EA0977 /* TaskListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewModel.swift; sourceTree = "<group>"; };
 		2C6D81EC1FE5FFB4007EF91B /* TaskStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStatus.swift; sourceTree = "<group>"; };
 		2C6D81EF1FE602E9007EF91B /* TaskListsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListsViewController.swift; sourceTree = "<group>"; };
 		2C6D81F11FE6031B007EF91B /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
@@ -272,6 +276,7 @@
 		2C31559E1FE37DAB0021EE64 /* ColorTheme */ = {
 			isa = PBXGroup;
 			children = (
+				2C5469701FE61DAE00EA0977 /* Misc */,
 				2C3155DA1FE452650021EE64 /* Views */,
 				2C3155D91FE40E1F0021EE64 /* ViewModels */,
 				2C3155D31FE404BB0021EE64 /* Models */,
@@ -347,7 +352,7 @@
 		2C3155D31FE404BB0021EE64 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				2C3155D41FE404CA0021EE64 /* Theme.swift */,
+				2C5469711FE61DE400EA0977 /* ThemeObject.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -478,6 +483,7 @@
 			children = (
 				2C7149E41FE30D4D0014D79F /* TasksViewModel.swift */,
 				2C033AD31FE35D44003DF4ED /* SingleTaskViewModel.swift */,
+				2C5469731FE6253100EA0977 /* TaskListViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -545,6 +551,14 @@
 				2C4CE0641FE1A26300F658D1 /* API.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		2C5469701FE61DAE00EA0977 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				2C3155D41FE404CA0021EE64 /* Theme.swift */,
+			);
+			path = Misc;
 			sourceTree = "<group>";
 		};
 		2C6D81EB1FE5FFA4007EF91B /* Misc */ = {
@@ -878,6 +892,7 @@
 				2C6D81F21FE6031B007EF91B /* TaskList.swift in Sources */,
 				2C7149EC1FE313170014D79F /* Wrapper.swift in Sources */,
 				2C3155D21FE4028B0021EE64 /* ThemeManager.swift in Sources */,
+				2C5469741FE6253100EA0977 /* TaskListViewModel.swift in Sources */,
 				2C7149F21FE31E500014D79F /* AppCoordinator.swift in Sources */,
 				2C3155E11FE587640021EE64 /* ProjectStatus.swift in Sources */,
 				2C3155B81FE3CFE30021EE64 /* MenuTableViewCell.swift in Sources */,
@@ -906,6 +921,7 @@
 				2C3155B51FE3C37C0021EE64 /* ProjectsViewModel.swift in Sources */,
 				2C3155AE1FE38CCD0021EE64 /* Company.swift in Sources */,
 				2C3155D81FE40E130021EE64 /* ColorViewModel.swift in Sources */,
+				2C5469721FE61DE400EA0977 /* ThemeObject.swift in Sources */,
 				2C2F8C521FE5E7CB00F776D6 /* DBManager.swift in Sources */,
 				2C033AD41FE35D44003DF4ED /* SingleTaskViewModel.swift in Sources */,
 				2C7149E51FE30D4D0014D79F /* TasksViewModel.swift in Sources */,

@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias ErrorBlock = ((ServiceError?) -> Void)
+typealias ErrorBlock = ((ServiceError?) -> Void)?
 
 // used for wrapping consecutive requests
 class DataManager {
@@ -17,7 +17,7 @@ class DataManager {
 
     private init() {}
 
-    static func fetchStartData(completion: @escaping  ErrorBlock) {
+    static func fetchStartData(completion: ErrorBlock) {
 
         DispatchQueue.global().async {
             var user: User?
@@ -63,12 +63,25 @@ class DataManager {
                 group.leave()
             }
 
+            var tasks: [TaskItem] = []
+            group.enter()
+            API.request(target: Service.tasks(params: nil), object: Wrapper<TaskItem>.self) { (result) in
+                switch result {
+                case .success(let wrapper):
+                    print("Success")
+                    tasks = wrapper.items
+                case .failure(let error):
+                    responseError = error
+                }
+                group.leave()
+            }
+
             group.wait()
 
             guard let currentUser = user,
                 responseError == nil else {
                 let er: ServiceError = responseError ?? .noObject
-                completion(er)
+                completion?(er)
                 return
             }
 
@@ -88,9 +101,14 @@ class DataManager {
                 group.leave()
             })
 
+            group.enter()
+            DBManager.shared.addObjects(objects: tasks, completion: { (error) in
+                group.leave()
+            })
+
 
             group.wait()
-            completion(nil)
+            completion?(nil)
 
         }
 
