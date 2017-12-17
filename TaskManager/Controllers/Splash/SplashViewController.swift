@@ -22,6 +22,7 @@ class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureUI()
+        self.fetchData()
     }
 
     private func configureUI() {
@@ -37,15 +38,16 @@ class SplashViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.fetchData()
     }
 
     private func fetchData() {
         self.loadingLabel.startLoading()
         self.viewModel.fetchStartData { [weak self] (error) in
             self?.loadingLabel.stopLoading()
-            if let er = error {
-                print(er.localizedDescription)
+            if error != nil {
+                SnackBar.show(type: .error(error: .syncFailed), onEndAnimation: {
+                    self?.onFinish?()
+                })
             } else {
                 self?.onFinish?()
             }

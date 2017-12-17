@@ -42,7 +42,7 @@ class BaseTableViewController: UITableViewController {
 
     func configureRefresh() {
         let refresher = UIRefreshControl()
-        refresher.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        refresher.addTarget(self, action: #selector(self.refreshData), for: .valueChanged)
         refresher.tintColor = .white
         self.refreshControl = refresher
     }

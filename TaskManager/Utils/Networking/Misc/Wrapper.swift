@@ -13,19 +13,22 @@ struct Wrapper<T: Codable>: Codable {
     var items: [T]
     var object: T?
 
-    // used for parsing taskLists and tasks
+    // used for parsing tasks
     enum ItemKey: String, CodingKey {
         case items = "todo-items"
     }
 
+    // used for parsing projects
     enum ProjectKey: String, CodingKey {
         case projects
     }
 
+    // used for parsing users
     enum UserKey: String, CodingKey {
         case person
     }
 
+    // used for parsing task lists
     enum TaskListKey: String, CodingKey {
         case tasklists
     }

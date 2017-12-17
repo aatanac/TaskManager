@@ -7,19 +7,25 @@
 //
 
 import Foundation
+import RealmSwift
 
 final class ProjectsViewModel: NSObject, ViewModel {
+    
+    var token: NotificationToken?
 
-    var service: Service = Service.projects(params: ["status": ProjectStatus.active.rawValue])
+    var service: Service = Service.projects(params: nil)
 
     typealias ItemType = Project
 
     var onReloadData: (() -> Void)?
 
-    internal var items: [ItemType] = [] {
-        didSet {
-            self.onReloadData?()
-        }
+    internal var items: Results<ItemType> = {
+        return DBManager.shared.fetchObjects(objects: ItemType.self, query: nil)
+
+    }()
+    
+    deinit {
+        print("Deinit: ", self)
     }
 
 }

@@ -51,30 +51,6 @@ class Project: Object, Codable {
 		case harvestTimersOnabled = "harvest-timers-enabled"
 	}
 
-    convenience required init(from decoder: Decoder) throws {
-        self.init()
-		let values = try decoder.container(keyedBy: CodingKeys.self)
-        
-		self.company = try Company(from: decoder)
-		self.starred = try values.decode(Bool.self, forKey: .starred)
-		self.name = try values.decode(String.self, forKey: .name)
-		self.showAnnouncement = try values.decode(Bool.self, forKey: .showAnnouncement)
-		self.announcement = try values.decode(String.self, forKey: .announcement)
-		self.desc = try values.decode(String.self, forKey: .desc)
-		self.status = try values.decode(String.self, forKey: .status)
-		self.isProjectAdmin = try values.decode(Bool.self, forKey: .isProjectAdmin)
-		self.createdOn = try values.decode(String.self, forKey: .createdOn)
-		self.category = try Category(from: decoder)
-		self.startPage = try values.decode(String.self, forKey: .startPage)
-		self.startDate = try values.decode(String.self, forKey: .startDate)
-		self.logo = try values.decode(String.self, forKey: .logo)
-		self.notifyeveryone = try values.decode(Bool.self, forKey: .notifyeveryone)
-		self.id = try values.decode(String.self, forKey: .id)
-		self.lastChangedOn = try values.decode(String.self, forKey: .lastChangedOn)
-		self.endDate = try values.decode(String.self, forKey: .endDate)
-		self.harvestTimersOnabled = try values.decode(Bool.self, forKey: .harvestTimersOnabled)
-	}
-
     override static func primaryKey() -> String? {
         return "id"
     }

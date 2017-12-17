@@ -11,15 +11,24 @@ import RealmSwift
 
 typealias DataObject = Object & Codable
 
-// resused for Tasks and Projects
+// resused for Tasks, Projects and tasksList
 protocol ViewModel: class {
 
+    // object type
     associatedtype ItemType: DataObject
+    // init service for network request (refresh data)
     var service: Service { get set }
-    var items: [ItemType] { get set }
+    // db items
+    var items: Results<ItemType> { get set }
+    // called on refresh data
     var onReloadData: (() -> Void)? { get set }
+    // pull to refresh action
     func refreshData(completion: ErrorBlock)
+    // passing item to vc list
     func item(for indexPath: IndexPath) -> ItemType
+    // object for listening changes in db
+    // with timeStamp works perfectly
+    var token: NotificationToken? { get set }
 
 }
 
@@ -36,36 +45,23 @@ extension ViewModel {
     }
 
     func refreshData(completion: ErrorBlock) {
-
-        DataManager.refreshData(target: self.service, object: ItemType.self) { [weak self] (result) in
-
+        DataManager.refreshData(target: self.service, object: ItemType.self) { (error) in
             DispatchQueue.main.async {
-
-                switch result {
-                case .success(let dbItems):
-                    self?.items = dbItems
-                    completion?(nil)
-                case .failure(let error):
-                    completion?(error)
+                if let er = error {
+                    print(er.localizedDescription)
+                } else {
+                    print("Success")
                 }
+                completion?(error)
             }
-
         }
 
     }
 
-    func fetchFromDB(query: String?, completion: @escaping ((Result<[ItemType], Service>) -> Void)) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-
-        DBManager.shared.fetchObjects(objects: ItemType.self, query: query) { [weak self] (result) in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-
-            switch result {
-            case .success(let dbItems):
-                self?.items = dbItems
-            case .failure(let error):
-                completion(.failure(error))
-            }
+    // called in vc that listens changes on db, has pull to refresh implemented
+    func subscribeToDBNotification() {
+        self.token = self.items.observe { [weak self] (changes: RealmCollectionChange) in
+            self?.onReloadData?()
         }
     }
 

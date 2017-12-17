@@ -7,29 +7,37 @@
 //
 
 import Foundation
+import RealmSwift
 
 final class TaskListViewModel: NSObject, ViewModel {
 
-    var service: Service = Service.taskLists(projectID: nil)
+    var token: NotificationToken?
+    
+    lazy var service: Service = {
+        return Service.taskLists(projectID: self.project.id, params: nil)
+    }()
+
     var project: Project
 
     init(project: Project) {
         self.project = project
+        // project ID for query
+        self.items = DBManager.shared.fetchObjects(objects: ItemType.self, query: "projectId = '\(self.project.id)'")
     }
 
     typealias ItemType = TaskList
 
     var onReloadData: (() -> Void)?
 
-    internal var items: [ItemType] = [] {
-        didSet {
-            self.onReloadData?()
-        }
+    internal var items: Results<ItemType>
+
+    deinit {
+        print("Deinit: ", self)
     }
 
 }
 
-extension TaskListViewModel: UISearchResultsUpdating{
+extension TaskListViewModel: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         print("change data")

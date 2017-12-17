@@ -9,7 +9,7 @@
 import Foundation
 
 class SplashViewModel {
-
+    // start data fetching
     func fetchStartData(completion: ErrorBlock) {
 
         DataManager.fetchStartData { (error) in

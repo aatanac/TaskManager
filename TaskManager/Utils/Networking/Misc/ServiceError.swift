@@ -15,6 +15,7 @@ enum ServiceError: Error, CustomStringConvertible {
     case error(_: Error)
     case noObject
     case unknown(response: [String: Any]?)
+    case syncFailed
 
     var title: String {
         switch self {
@@ -24,6 +25,8 @@ enum ServiceError: Error, CustomStringConvertible {
             return ServiceError.defaultTitle
         case .noObject:
             return ServiceError.defaultTitle
+        case .syncFailed:
+            return "Sync failed."
         }
     }
 
@@ -35,6 +38,8 @@ enum ServiceError: Error, CustomStringConvertible {
             return "Unknown error"
         case .noObject:
             return "No object. Please check parsing and db saving"
+        case .syncFailed:
+            return "Please refresh your data in controllers."
         }
     }
 

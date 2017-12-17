@@ -23,7 +23,7 @@ class ProjectsViewController: BaseTableViewController {
     }
 
     private func configureTableView() {
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        self.tableView.register(ProjectTableViewCell.self, forCellReuseIdentifier: "ProjectTableViewCell")
     }
 
     private func handleData() {
@@ -32,10 +32,8 @@ class ProjectsViewController: BaseTableViewController {
         self.viewModel.onReloadData = { [weak self] in
             self?.tableView.reloadData()
         }
-        
-        self.viewModel.fetchFromDB(query: nil) { (result) in
-            print("Results", result)
-        }
+        self.viewModel.subscribeToDBNotification()
+
     }
 
     override func refreshData() {
@@ -56,11 +54,15 @@ class ProjectsViewController: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProjectTableViewCell", for: indexPath) as? ProjectTableViewCell
         let item = self.viewModel.item(for: indexPath)
-        cell.textLabel?.text = item.name
+        cell?.item = item
 
-        return cell
+        return cell!
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return ProjectTableViewCell.height
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

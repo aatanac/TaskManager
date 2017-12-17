@@ -23,7 +23,7 @@ final class TasksViewController: BaseTableViewController {
     }
 
     private func configureTableView() {
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        self.tableView.register(TaskTableViewCell.self, forCellReuseIdentifier: "TaskTableViewCell")
     }
 
     private func handleData() {
@@ -32,10 +32,7 @@ final class TasksViewController: BaseTableViewController {
         self.viewModel.onReloadData = { [weak self] in
             self?.tableView.reloadData()
         }
-        
-        self.viewModel.fetchFromDB(query: nil) { (result) in
-            print("Results", result)
-        }
+        self.viewModel.subscribeToDBNotification()
 
     }
 
@@ -58,9 +55,9 @@ final class TasksViewController: BaseTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskTableViewCell", for: indexPath) as! TaskTableViewCell
         let item = self.viewModel.item(for: indexPath)
-        cell.textLabel?.text = item.content
+        cell.item = item
 
         return cell
     }
@@ -68,6 +65,10 @@ final class TasksViewController: BaseTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = self.viewModel.item(for: indexPath)
         self.onTaskSelected?(item)
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return TaskTableViewCell.height
     }
 
 }

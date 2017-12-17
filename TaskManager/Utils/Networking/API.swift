@@ -24,9 +24,9 @@ private class NetworkManager: Alamofire.SessionManager {
 }
 
 class API {
-
+    // used for all netwrking calls in
     static func request<T:Codable>(target: Service, object:T.Type,_  completion: @escaping ((Result<T, ServiceError>) -> Void)) {
-
+        // hc credenitals injected
         let provider = MoyaProvider<Service>(manager: NetworkManager.sharedManager, plugins: [CredentialsPlugin { _ -> URLCredential? in
             return URLCredential(user: Service.username, password: Service.password, persistence: .none)
             }
@@ -42,6 +42,7 @@ class API {
                 }
                 do {
                     let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .formatted(DateManager.formatter)
                     let value = try decoder.decode(T.self, from: response.data)
                     return completion(.success(value))
                 } catch let error {

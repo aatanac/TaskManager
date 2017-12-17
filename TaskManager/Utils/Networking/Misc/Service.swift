@@ -9,11 +9,17 @@
 import Foundation
 import Moya
 
+// if app would grow it would be implemented multiple service for separation of logic
 enum Service {
+    // all fetched
     case tasks(params: [String: Any]?)
-    case taskLists(projectID: String?)
+    // all task lists are fetched, just for showcase to use query on db
+    case taskLists(projectID: String, params: [String: Any]?)
+    // not implemented in app, just used for testing
     case tasksEdit(method: Moya.Method, taskListID: Int, params: [String: Any])
-    case projects(params: [String: Any])
+    // all projects are fetched, just for showcase to use query on db
+    case projects(params: [String: Any]?)
+    // current user which credentials are hardcoded
     case user
 }
 
@@ -39,7 +45,7 @@ extension Service: TargetType {
             return header
         case .user:
             return header
-        case .taskLists(projectID: _):
+        case .taskLists(projectID: _, params: _):
             return header
         }
     }
@@ -58,12 +64,8 @@ extension Service: TargetType {
             return "/tasklists/\(ID)/tasks.json"
         case .user:
             return "/me.json"
-        case .taskLists(projectID: let ID):
-            if let projectID = ID {
-                return "/projects/\(projectID)/tasklists.json"
-            } else {
-                return "/tasklists.json"
-            }
+        case .taskLists(projectID: let ID, params: _):
+            return "/projects/\(ID)/tasklists.json"
         }
     }
 
@@ -77,7 +79,7 @@ extension Service: TargetType {
             return method
         case .user:
             return Moya.Method.get
-        case .taskLists(projectID: _):
+        case .taskLists(projectID: _, params: _):
             return Moya.Method.get
         }
     }
@@ -90,14 +92,21 @@ extension Service: TargetType {
             }
             return .requestPlain
         case .projects(params: let params):
-            return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
+            if let parameters = params {
+                return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+            } else {
+                return .requestPlain
+            }
         case .tasksEdit(method: _, taskListID: _, params: let params):
             return .requestParameters(parameters: params, encoding: JSONEncoding.default)
         case .user:
             return .requestPlain
-        case .taskLists(projectID: _):
-            // hardcoded for simplicity
-            return .requestParameters(parameters: ["status": "active"], encoding: URLEncoding.queryString)
+        case .taskLists(projectID: _, params: let params):
+            if let parameters = params {
+                return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+            } else {
+                return .requestPlain
+            }
         }
     }
 

@@ -17,14 +17,17 @@ class DBManager {
 
     let realmQueue = "RealmQueue"
 
+    // start configuration for db
+    // usesd default on because of simplicity of app
+    // if there were multiple accounts every use would have own db
     static func configure() {
         let config = Realm.Configuration()
         Realm.Configuration.defaultConfiguration = config
         print(config.fileURL ?? "No url!!!")
     }
 
+    // add/update objects fetched from network call
     func addObjects(objects: [Object], completion: ErrorBlock) {
-
         guard objects.count > 0 else {
             completion?(nil)
             return
@@ -41,27 +44,26 @@ class DBManager {
         }
     }
 
+    // fetch single object
     func fetchObject<T: DataObject>(objects: T.Type, query: String?) -> T? {
         let realm = try! Realm()
         var result = realm.objects(T.self)
         if let queryString = query {
             result = result.filter(queryString)
         }
+
         return result.first
     }
 
-    func fetchObjects<T: DataObject>(objects: T.Type, query: String?, completion: @escaping ((Result<[T], Service>) -> Void)) {
-
+    // fetch multiple objects
+    func fetchObjects<T: DataObject>(objects: T.Type, query: String?) -> Results<T> {
         let realm = try! Realm()
         var result = realm.objects(T.self)
         if let queryString = query {
             result = result.filter(queryString)
         }
 
-        let array: [T] = result.flatMap{$0}
-        
-        completion(.success(array))
-
+        return result
     }
 
 }

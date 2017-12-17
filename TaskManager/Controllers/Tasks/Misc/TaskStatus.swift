@@ -9,10 +9,18 @@
 import Foundation
 
 public enum TaskStatus: String {
-
     case deleted
     case completed
     case reopened
     case new
+
+    var color: UIColor {
+        switch self {
+        case .completed, .deleted:
+            return Color.green
+        default:
+            return Color.gray
+        }
+    }
 
 }

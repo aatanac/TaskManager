@@ -8,8 +8,11 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 final class TasksViewModel: NSObject, ViewModel {
+
+    var token: NotificationToken?
 
     var service: Service = Service.tasks(params: nil)
 
@@ -17,10 +20,12 @@ final class TasksViewModel: NSObject, ViewModel {
 
     var onReloadData: (() -> Void)?
 
-    internal var items: [ItemType] = [] {
-        didSet {
-            self.onReloadData?()
-        }
+    internal var items: Results<ItemType> = {
+        return DBManager.shared.fetchObjects(objects: ItemType.self, query: nil)
+    }()
+
+    deinit {
+        print("Deinit: ", self)
     }
 
 }

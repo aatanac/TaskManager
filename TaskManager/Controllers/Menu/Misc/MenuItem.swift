@@ -9,7 +9,6 @@
 import Foundation
 
 public enum MenuItem: String {
-
     case dashboard = "Dashboard"
     case project = "Project"
     case latestActivity = "Latest Activity"

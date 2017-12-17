@@ -8,6 +8,7 @@
 
 import Foundation
 
+// result of network or db calls that contains one or multuple objects
 public enum Result<T, E> {
     case success(T)
     case failure(E)

@@ -25,6 +25,7 @@ public enum Image: String, ImageAsset {
     case settings
     case colorTheme
     case star
+    case checkmark
 
     var name: String {
         return self.rawValue

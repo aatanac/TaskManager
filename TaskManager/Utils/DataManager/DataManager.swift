@@ -19,7 +19,7 @@ class DataManager {
     private init() {}
 
     // prefetching data on app launch
-    // this is just a showcase, API has pagination
+    // this is just a showcase, API has pagination there is no need for this 
     // for simplicity of the app pagination and other params are removed from apps logic
     static func fetchStartData(completion: ErrorBlock) {
 
@@ -43,24 +43,11 @@ class DataManager {
 
             var projects: [Project] = []
             group.enter()
-            API.request(target: Service.projects(params: ["status": ProjectStatus.active.rawValue]), object: Wrapper<Project>.self) { (result) in
+            API.request(target: Service.projects(params: nil), object: Wrapper<Project>.self) { (result) in
                 switch result {
                 case .success(let wrapper):
                     print("Success")
                     projects = wrapper.items
-                case .failure(let error):
-                    responseError = error
-                }
-                group.leave()
-            }
-
-            var taskLists: [TaskList] = []
-            group.enter()
-            API.request(target: Service.taskLists(projectID: nil), object: Wrapper<TaskList>.self) { (result) in
-                switch result {
-                case .success(let wrapper):
-                    print("Success")
-                    taskLists = wrapper.items
                 case .failure(let error):
                     responseError = error
                 }
@@ -81,6 +68,26 @@ class DataManager {
             }
 
             group.wait()
+
+            var taskLists: [TaskList] = []
+
+            for project in projects {
+                group.enter()
+                API.request(target: Service.taskLists(projectID: project.id, params: nil), object: Wrapper<TaskList>.self) { (result) in
+                    switch result {
+                    case .success(let wrapper):
+                        print("Success")
+                        taskLists.append(contentsOf: wrapper.items)
+                    case .failure(let error):
+                        responseError = error
+                    }
+                    group.leave()
+                }
+            }
+
+            if projects.count > 0 {
+                group.wait()
+            }
 
             guard let currentUser = user,
                 responseError == nil else {
@@ -118,7 +125,9 @@ class DataManager {
 
     }
 
-    static func refreshData<T:DataObject>(target: Service, object:T.Type,_  completion: ((Result<[T], ServiceError>) -> Void)?) {
+    // fetch data from network and refreshing db with that data
+    // called on pull to refresh
+    static func refreshData<T:DataObject>(target: Service, object:T.Type,_  completion: ErrorBlock) {
 
         DispatchQueue.global().async {
             let group = DispatchGroup()
@@ -132,26 +141,21 @@ class DataManager {
                     fetchedItems = wrapper.items
                     group.leave()
                 case .failure(let error):
-                    completion?(.failure(error))
+                    completion?(error)
                 }
             }
 
             group.wait()
-            completion?(.success(fetchedItems))
-//
-//            var dbItems: [T] = []
-//            fetchedItems.forEach({ (item) in
-//                dbItems.append(item)
-//            })
-//
-//            group.enter()
-//            DBManager.shared.addObjects(objects: dbItems) { (error) in
-//                if let er = error {
-//                    completion?(.failure(er))
-//                } else {
-//                    completion?(.success(fetchedItems))
-//                }
-//            }
+
+
+            group.enter()
+            DBManager.shared.addObjects(objects: fetchedItems) { (error) in
+                if let er = error {
+                    completion?(er)
+                } else {
+                    completion?(nil)
+                }
+            }
 
         }
 

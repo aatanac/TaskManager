@@ -30,17 +30,6 @@ class User: Object, Codable {
 
     }
 
-    convenience required init(from decoder: Decoder) throws {
-        self.init()
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try values.decode(String.self, forKey: .id)
-        self.userName = try values.decode(String.self, forKey: .userName)
-        self.imgUrl = try values.decode(String.self, forKey: .imgUrl)
-        self.firstName = try values.decode(String.self, forKey: .imgUrl)
-        self.lastName = try values.decode(String.self, forKey: .imgUrl)
-        self.email = try values.decode(String.self, forKey: .imgUrl)
-    }
-
     override static func primaryKey() -> String? {
         return "id"
     }

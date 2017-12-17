@@ -9,7 +9,6 @@
 import Foundation
 
 public enum ProjectStatus: String {
-    
     case all
     case active
     case archived

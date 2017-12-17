@@ -34,6 +34,8 @@ protocol ImageAsset: Asset {
 }
 
 extension ImageAsset {
+
+    // standard image
     var image: UIImage {
         guard let image = UIImage(named: self.name) else {
             assertionFailure("Cant find image named \(self.name)")

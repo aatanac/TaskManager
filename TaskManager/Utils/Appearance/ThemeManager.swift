@@ -50,6 +50,7 @@ class ThemeManager {
         NotificationCenter.default.post(name: Notification.Name.apllyTheme, object: nil)
     }
 
+    // wrapping singletone property
     static var currentTheme: Theme {
         return ThemeManager.shared.currentTheme
     }

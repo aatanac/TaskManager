@@ -17,6 +17,7 @@ class LoadingLabel: UILabel {
     }
 
     let textLoading = "Synchronizing data "
+    let textFinished = "Finished sync data"
 
     var timer: Timer?
 
@@ -50,6 +51,7 @@ class LoadingLabel: UILabel {
     }
 
     func stopLoading() {
+        self.text = self.textFinished
         timer?.invalidate()
         timer = nil
     }
