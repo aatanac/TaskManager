@@ -32,7 +32,6 @@ final class AppCoordinator: NSObject, RootCoordinator {
         vc.onFinish = { [weak self] in
             self?.moveForward()
         }
-
         self.window.rootViewController = vc
 
     }
@@ -75,7 +74,7 @@ final class AppCoordinator: NSObject, RootCoordinator {
 
 
     // configuring side menu controller, one time in app
-    private func configureMenuVc(type: MenuType) -> MenuViewController{
+    private func configureMenuVc(type: MenuType) -> MenuViewController {
         let menuVc = MenuViewController(type: type)
 
         // returning selected item from controller
@@ -94,7 +93,7 @@ final class AppCoordinator: NSObject, RootCoordinator {
         self.frontNavigation = self.wrapWithNavVc(vc: vc)
         // returning selected task from controller
         vc.onTaskSelected = { [weak self] task in
-            self?.showSingleTask(for: task)
+            self?.showTestVc()
         }
         return self.frontNavigation
     }
@@ -116,9 +115,17 @@ final class AppCoordinator: NSObject, RootCoordinator {
         let vc = TaskListsViewController(project: project)
         vc.onListSelected = { [weak self] list in
             let vc = TasksViewController(list: list)
+            vc.onTaskSelected = { [weak self] _ in
+                self?.showTestVc()
+            }
             self?.frontNavigation.pushViewController(vc, animated: true)
         }
         // take reference of navigation
+        self.frontNavigation.pushViewController(vc, animated: true)
+    }
+
+    private func showTestVc() {
+        let vc = TestViewController()
         self.frontNavigation.pushViewController(vc, animated: true)
     }
     
@@ -165,12 +172,6 @@ final class AppCoordinator: NSObject, RootCoordinator {
 
     }
 
-    // single task
-    private func showSingleTask(for item: TaskItem) {
-        let vc = SingleTaskViewController(task: item)
-        self.frontNavigation.pushViewController(vc, animated: true)
-    }
-
     // task list
     private func showTasks() {
         let vc = self.configureTasksVc()
@@ -194,7 +195,6 @@ extension AppCoordinator: SWRevealViewControllerDelegate {
         guard let frontVc = revealController.frontViewController else {
             return
         }
-
         switch position {
         case .left:
             frontVc.view.isUserInteractionEnabled = true

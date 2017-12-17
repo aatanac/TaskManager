@@ -55,4 +55,8 @@ class Project: Object, Codable {
         return "id"
     }
 
+    override static func indexedProperties() -> [String] {
+        return ["id"]
+    }
+
 }

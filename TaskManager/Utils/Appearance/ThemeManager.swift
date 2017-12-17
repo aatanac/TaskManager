@@ -20,7 +20,7 @@ class ThemeManager {
 
     // configure start theme on app launch
     static func configure() {
-        let themeValue = DBManager.shared.fetchObject(objects: ThemeObject.self, query: nil)
+        let themeValue = DBManager.shared.fetchObject(objects: ThemeObject.self)
         let theme = Theme(rawValue: themeValue?.color ?? Theme.defaultValue)!
         ThemeManager.shared.currentTheme = theme
         ThemeManager.applyTheme(theme: theme)

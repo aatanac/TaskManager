@@ -25,4 +25,8 @@ class Company: Object, Codable {
         return "id"
     }
 
+    override static func indexedProperties() -> [String] {
+        return ["id"]
+    }
+
 }

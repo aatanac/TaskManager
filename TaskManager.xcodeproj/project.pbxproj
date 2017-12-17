@@ -12,8 +12,6 @@
 		2C033AC41FE34016003DF4ED /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C033AC31FE34016003DF4ED /* MenuViewModel.swift */; };
 		2C033AC81FE34563003DF4ED /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C033AC71FE34563003DF4ED /* MenuItem.swift */; };
 		2C033ACC1FE34FB9003DF4ED /* SWRevealViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C033ACB1FE34FB9003DF4ED /* SWRevealViewController+Extensions.swift */; };
-		2C033ACF1FE35BD0003DF4ED /* SingleTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C033ACE1FE35BD0003DF4ED /* SingleTaskViewController.swift */; };
-		2C033AD41FE35D44003DF4ED /* SingleTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C033AD31FE35D44003DF4ED /* SingleTaskViewModel.swift */; };
 		2C033AD61FE36734003DF4ED /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C033AD51FE36734003DF4ED /* TestViewController.swift */; };
 		2C29F4971FE2B6C100EAB23F /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C29F4961FE2B6C100EAB23F /* Coordinator.swift */; };
 		2C29F49A1FE2B7D600EAB23F /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C29F4991FE2B7D600EAB23F /* NavigationController.swift */; };
@@ -109,8 +107,6 @@
 		2C033AC31FE34016003DF4ED /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
 		2C033AC71FE34563003DF4ED /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		2C033ACB1FE34FB9003DF4ED /* SWRevealViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SWRevealViewController+Extensions.swift"; sourceTree = "<group>"; };
-		2C033ACE1FE35BD0003DF4ED /* SingleTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTaskViewController.swift; sourceTree = "<group>"; };
-		2C033AD31FE35D44003DF4ED /* SingleTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTaskViewModel.swift; sourceTree = "<group>"; };
 		2C033AD51FE36734003DF4ED /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		2C29F4961FE2B6C100EAB23F /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		2C29F4991FE2B7D600EAB23F /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
@@ -497,7 +493,6 @@
 			isa = PBXGroup;
 			children = (
 				2C7149E41FE30D4D0014D79F /* TasksViewModel.swift */,
-				2C033AD31FE35D44003DF4ED /* SingleTaskViewModel.swift */,
 				2C5469731FE6253100EA0977 /* TaskListViewModel.swift */,
 			);
 			path = ViewModels;
@@ -551,7 +546,6 @@
 		2C4CE0631FE19EC900F658D1 /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
-				2C033ACE1FE35BD0003DF4ED /* SingleTaskViewController.swift */,
 				2C7149E21FE30D100014D79F /* TasksViewController.swift */,
 				2C6D81EF1FE602E9007EF91B /* TaskListsViewController.swift */,
 				2C6D81EB1FE5FFA4007EF91B /* Misc */,
@@ -956,7 +950,6 @@
 				2C3155B81FE3CFE30021EE64 /* MenuTableViewCell.swift in Sources */,
 				2C3155A51FE3887A0021EE64 /* BaseTableViewController.swift in Sources */,
 				2C033AC21FE33F4B003DF4ED /* MenuViewController.swift in Sources */,
-				2C033ACF1FE35BD0003DF4ED /* SingleTaskViewController.swift in Sources */,
 				2C4CE0651FE1A26300F658D1 /* API.swift in Sources */,
 				2C3155EF1FE5D9680021EE64 /* User.swift in Sources */,
 				2C714A001FE337CC0014D79F /* Image.swift in Sources */,
@@ -984,7 +977,6 @@
 				2C5469721FE61DE400EA0977 /* ThemeObject.swift in Sources */,
 				2C2F8C521FE5E7CB00F776D6 /* DBManager.swift in Sources */,
 				2C5469871FE6DD3C00EA0977 /* DateManager.swift in Sources */,
-				2C033AD41FE35D44003DF4ED /* SingleTaskViewModel.swift in Sources */,
 				2C7149E51FE30D4D0014D79F /* TasksViewModel.swift in Sources */,
 				2C5469791FE6B40700EA0977 /* SnackBarView.swift in Sources */,
 				2C714A021FE337CC0014D79F /* Color.swift in Sources */,

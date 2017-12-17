@@ -20,8 +20,7 @@ final class ProjectsViewModel: NSObject, ViewModel {
     var onReloadData: (() -> Void)?
 
     internal var items: Results<ItemType> = {
-        return DBManager.shared.fetchObjects(objects: ItemType.self, query: nil)
-
+        return DBManager.shared.fetchObjects(objects: ItemType.self, sort: "name")
     }()
     
     deinit {
@@ -34,6 +33,23 @@ extension ProjectsViewModel: UISearchResultsUpdating{
 
     func updateSearchResults(for searchController: UISearchController) {
         print("change data")
+        self.handleSearch(for: searchController.searchBar.text)
+    }
+
+}
+
+extension ProjectsViewModel {
+
+    func handleSearch(for searchText: String?) {
+        guard let text = searchText else {
+            return
+        }
+        if text == "" {
+            self.items = DBManager.shared.fetchObjects(objects: ItemType.self, sort: "name")
+        } else {
+            self.items = DBManager.shared.fetchObjects(objects: ItemType.self, query: "name CONTAINS[c] '\(text)'", sort: "name")
+        }
+        self.onReloadData?()
     }
 
 }

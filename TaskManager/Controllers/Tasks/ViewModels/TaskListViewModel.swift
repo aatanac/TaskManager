@@ -18,14 +18,14 @@ final class TaskListViewModel: NSObject, ViewModel {
     }()
 
     var project: Project
+    typealias ItemType = TaskList
 
     init(project: Project) {
         self.project = project
         // project ID for query
-        self.items = DBManager.shared.fetchObjects(objects: ItemType.self, query: "projectId = '\(self.project.id)'")
+        self.items = DBManager.shared.fetchObjects(objects: ItemType.self, query: "projectId = '\(self.project.id)'", sort: "name")
     }
 
-    typealias ItemType = TaskList
 
     var onReloadData: (() -> Void)?
 
@@ -41,6 +41,25 @@ extension TaskListViewModel: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         print("change data")
+        self.handleSearch(for: searchController.searchBar.text)
+    }
+
+}
+
+extension TaskListViewModel {
+
+    func handleSearch(for searchText: String?) {
+        guard let text = searchText else {
+            return
+        }
+
+        if text == "" {
+            self.items = DBManager.shared.fetchObjects(objects: ItemType.self, query: "projectId = '\(self.project.id)'", sort: "name")
+        } else {
+            self.items = DBManager.shared.fetchObjects(objects: ItemType.self, query: "projectId = '\(self.project.id)' && name CONTAINS[c] '\(text)'", sort: "name")
+        }
+
+        self.onReloadData?()
     }
 
 }

@@ -22,7 +22,7 @@ class BaseTableViewController: UITableViewController {
 
         self.searchController = UISearchController(searchResultsController: nil)
         self.searchController.hidesNavigationBarDuringPresentation = false
-        self.searchController.dimsBackgroundDuringPresentation = true
+        self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.searchBarStyle = .prominent
         self.searchController.searchBar.sizeToFit()
         self.searchController.searchBar.delegate = self

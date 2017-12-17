@@ -45,7 +45,7 @@ class DBManager {
     }
 
     // fetch single object
-    func fetchObject<T: DataObject>(objects: T.Type, query: String?) -> T? {
+    func fetchObject<T: DataObject>(objects: T.Type, query: String? = nil) -> T? {
         let realm = try! Realm()
         var result = realm.objects(T.self)
         if let queryString = query {
@@ -56,11 +56,14 @@ class DBManager {
     }
 
     // fetch multiple objects
-    func fetchObjects<T: DataObject>(objects: T.Type, query: String?) -> Results<T> {
+    func fetchObjects<T: DataObject>(objects: T.Type, query: String? = nil, sort: String? = nil) -> Results<T> {
         let realm = try! Realm()
         var result = realm.objects(T.self)
         if let queryString = query {
             result = result.filter(queryString)
+        }
+        if let sortString = sort {
+            result = result.sorted(byKeyPath: sortString, ascending: true)
         }
 
         return result

@@ -80,8 +80,11 @@ class DataManager {
                         }
 
                     case .failure(let error):
-                        tasksGroup.leave()
+                        hasResponse = false
                         responseError = error
+                        tasksGroup.leave()
+                        group.leave()
+
                     }
                 }
                 tasksGroup.wait()

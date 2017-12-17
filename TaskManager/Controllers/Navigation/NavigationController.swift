@@ -45,7 +45,9 @@ final class NavigationController: UINavigationController {
         if #available(iOS 11.0, *) {
             let font = Font.OpenSans.bold.font(size: 34)
             self.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: font]
+            self.navigationBar.prefersLargeTitles = true
         }
+        self.setNavigationBarHidden(false, animated: true)
     }
 
     // all configuration of navigationBar is in navigation vc
@@ -55,17 +57,10 @@ final class NavigationController: UINavigationController {
         switch vc {
         case is TasksViewController:
             vc.title = "Tasks"
-            self.configureNavBar(vc)
-
-        case is MenuViewController:
-            self.setNavBar(hidden: true)
-
-        case is SingleTaskViewController:
             self.configureBtns(for: vc)
-            vc.title = "Task"
 
         case is ProjectsViewController:
-            self.configureNavBar(vc)
+            self.configureBtns(for: vc)
             vc.title = "Projects"
 
         case is TestViewController:
@@ -87,12 +82,6 @@ final class NavigationController: UINavigationController {
         }
     }
 
-    // separating configuring navigation bar for task vc
-    private func configureNavBar(_ vc: UIViewController) {
-        self.setNavBar(hidden: false)
-        self.configureBtns(for: vc)
-    }
-
     private func configureBtns(for vc: UIViewController) {
         vc.navigationItem.leftItemsSupplementBackButton = true
         
@@ -103,14 +92,6 @@ final class NavigationController: UINavigationController {
         let settingsBtn = UIBarButtonItem(image: Image.settings.image, style: .plain, target: self.revealViewController(), action: #selector(SWRevealViewController.rightRevealToggle(_:)))
         vc.navigationItem.rightBarButtonItems = [settingsBtn]
 
-    }
-
-    // avoid repeat code for hidding navBar
-    private func setNavBar(hidden: Bool) {
-        if #available(iOS 11.0, *) {
-            self.navigationBar.prefersLargeTitles = !hidden
-        }
-        self.setNavigationBarHidden(hidden, animated: true)
     }
 
 }
