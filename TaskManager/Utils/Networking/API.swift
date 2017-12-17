@@ -17,7 +17,7 @@ private class NetworkManager: Alamofire.SessionManager {
         configuration.httpAdditionalHeaders = Alamofire.SessionManager.defaultHTTPHeaders
         configuration.timeoutIntervalForRequest = 20
         configuration.timeoutIntervalForResource = 20
-        configuration.requestCachePolicy = .useProtocolCachePolicy
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         return NetworkManager(configuration: configuration)
     }()
 

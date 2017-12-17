@@ -29,18 +29,24 @@ class ThemeManager {
     // apply theme on navigation bar and items
     static func applyTheme(theme: Theme) {
 
+        // create and save theme
         let themeObject = ThemeObject()
         themeObject.color = theme.rawValue
         DBManager.shared.addObjects(objects: [themeObject], completion: nil)
         ThemeManager.shared.currentTheme = theme
 
         let navigationBarAppearace = UINavigationBar.appearance()
+        // navBar background color
         navigationBarAppearace.barTintColor = theme.color
+        // navBar items tint color
         navigationBarAppearace.tintColor = theme.barItemsColor
+        // navBar title color
         navigationBarAppearace.titleTextAttributes = [NSAttributedStringKey.foregroundColor: theme.barItemsColor, NSAttributedStringKey.font: Font.OpenSans.bold.font(size: 16)]
-
+        // searchBar text color
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: theme.barItemsColor]
+        // searchBar items color
         UISearchBar.appearance().tintColor = theme.barItemsColor
-
+        // reloading UI depenging on theme
         NotificationCenter.default.post(name: Notification.Name.apllyTheme, object: nil)
     }
 

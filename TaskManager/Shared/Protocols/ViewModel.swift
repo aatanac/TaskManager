@@ -36,17 +36,20 @@ extension ViewModel {
     }
 
     func refreshData(completion: ErrorBlock) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
 
-        API.request(target: self.service, object: Wrapper<ItemType>.self) { [weak self] (result) in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        DataManager.refreshData(target: self.service, object: ItemType.self) { [weak self] (result) in
 
-            switch result {
-            case .success(let wrapper):
-                self?.items = wrapper.items
-            case .failure(let error):
-                completion?(error)
+            DispatchQueue.main.async {
+
+                switch result {
+                case .success(let dbItems):
+                    self?.items = dbItems
+                    completion?(nil)
+                case .failure(let error):
+                    completion?(error)
+                }
             }
+
         }
 
     }

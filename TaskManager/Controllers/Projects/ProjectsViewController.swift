@@ -12,11 +12,14 @@ class ProjectsViewController: BaseTableViewController {
 
     let viewModel = ProjectsViewModel()
 
+    var onProjectSelected: ((_ project: Project) -> Void)?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         super.configureUI()
         self.configureTableView()
         self.handleData()
+        self.configureRefresh()
     }
 
     private func configureTableView() {
@@ -35,6 +38,14 @@ class ProjectsViewController: BaseTableViewController {
         }
     }
 
+    override func refreshData() {
+
+        self.viewModel.refreshData { [weak self] (_) in
+            self?.refreshControl?.endRefreshing()
+        }
+
+    }
+
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -50,6 +61,11 @@ class ProjectsViewController: BaseTableViewController {
         cell.textLabel?.text = item.name
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = self.viewModel.item(for: indexPath)
+        self.onProjectSelected?(item)
     }
 
 }

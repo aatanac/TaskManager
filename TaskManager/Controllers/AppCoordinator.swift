@@ -89,11 +89,11 @@ final class AppCoordinator: NSObject, RootCoordinator {
 
     // tasks are configured as home or as one of pushed controllers from menu
     private func configureTasksVc() -> NavigationController {
-        let tasksVc = TasksViewController()
+        let vc = TasksViewController()
         // take reference of navigation
-        self.frontNavigation = self.wrapWithNavVc(vc: tasksVc)
+        self.frontNavigation = self.wrapWithNavVc(vc: vc)
         // returning selected task from controller
-        tasksVc.onTaskSelected = { [weak self] task in
+        vc.onTaskSelected = { [weak self] task in
             self?.showSingleTask(for: task)
         }
         return self.frontNavigation
@@ -101,11 +101,21 @@ final class AppCoordinator: NSObject, RootCoordinator {
 
     // tasks are configured as home or as one of pushed controllers from menu
     private func configureProjectsVc() -> NavigationController {
-        let tasksVc = ProjectsViewController()
+        let vc = ProjectsViewController()
         // take reference of navigation
-        self.frontNavigation = self.wrapWithNavVc(vc: tasksVc)
+        self.frontNavigation = self.wrapWithNavVc(vc: vc)
+        vc.onProjectSelected = { [weak self] project in
+            self?.showTaskListVc(project: project)
+        }
 
         return self.frontNavigation
+    }
+
+    // tasks are configured as home or as one of pushed controllers from menu
+    private func showTaskListVc(project: Project) {
+        let vc = TaskListsViewController(project: project)
+        // take reference of navigation
+        self.frontNavigation.pushViewController(vc, animated: true)
     }
     
     // configure color screen

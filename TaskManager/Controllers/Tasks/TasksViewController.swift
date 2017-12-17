@@ -19,6 +19,7 @@ final class TasksViewController: BaseTableViewController {
         super.configureUI()
         self.configureTableView()
         self.handleData()
+        self.configureRefresh()
     }
 
     private func configureTableView() {
@@ -34,6 +35,14 @@ final class TasksViewController: BaseTableViewController {
         
         self.viewModel.fetchFromDB(query: nil) { (result) in
             print("Results", result)
+        }
+
+    }
+
+    override func refreshData() {
+
+        self.viewModel.refreshData { [weak self] (_) in
+            self?.refreshControl?.endRefreshing()
         }
 
     }

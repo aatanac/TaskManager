@@ -25,7 +25,7 @@ final class NavigationController: UINavigationController {
         super.viewDidLoad()
         self.subscribeToNotification()
         self.delegate = self
-        self.navigationBar.isTranslucent = false
+        self.configureUI()
     }
 
     private func subscribeToNotification() {
@@ -38,6 +38,14 @@ final class NavigationController: UINavigationController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+
+    private func configureUI() {
+        self.navigationBar.isTranslucent = false
+        if #available(iOS 11.0, *) {
+            let font = Font.OpenSans.bold.font(size: 34)
+            self.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: font]
+        }
     }
 
     // all configuration of navigationBar is in navigation vc
@@ -68,6 +76,11 @@ final class NavigationController: UINavigationController {
             self.configureBtns(for: vc)
             vc.title = "Themes"
 
+        case is TaskListsViewController:
+            self.configureBtns(for: vc)
+            vc.title = "Task Lists"
+
+
         default:
             print(vc.self)
 
@@ -77,11 +90,6 @@ final class NavigationController: UINavigationController {
     // separating configuring navigation bar for task vc
     private func configureNavBar(_ vc: UIViewController) {
         self.setNavBar(hidden: false)
-
-        if #available(iOS 11.0, *) {
-            vc.navigationItem.hidesSearchBarWhenScrolling = false
-            vc.navigationController?.navigationBar.prefersLargeTitles = false
-        }
         self.configureBtns(for: vc)
     }
 

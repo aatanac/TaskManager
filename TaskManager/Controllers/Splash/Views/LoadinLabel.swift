@@ -16,7 +16,7 @@ class LoadingLabel: UILabel {
         }
     }
 
-    let textLoading = "Loading "
+    let textLoading = "Synchronizing data "
 
     var timer: Timer?
 
@@ -36,6 +36,7 @@ class LoadingLabel: UILabel {
         self.font = Font.OpenSans.regular.font(size: 14)
         self.text = self.textLoading
         self.textAlignment = .left
+        self.numberOfLines = 0
     }
 
     func startLoading() {

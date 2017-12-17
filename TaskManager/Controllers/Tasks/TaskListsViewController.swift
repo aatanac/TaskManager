@@ -10,15 +10,25 @@ import UIKit
 
 class TaskListsViewController: BaseTableViewController {
 
-    let viewModel = TaskListViewModel()
+    let viewModel: TaskListViewModel
 
     var onListSelected: ((_ task: TaskList) -> Void)?
+
+    init(project: Project) {
+        self.viewModel = TaskListViewModel(project: project)
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         super.configureUI()
         self.configureTableView()
         self.handleData()
+        self.configureRefresh()
     }
 
     private func configureTableView() {
@@ -34,6 +44,14 @@ class TaskListsViewController: BaseTableViewController {
 
         self.viewModel.fetchFromDB(query: nil) { (result) in
             print("Results", result)
+        }
+
+    }
+
+    override func refreshData() {
+
+        self.viewModel.refreshData { [weak self] (_) in
+            self?.refreshControl?.endRefreshing()
         }
 
     }

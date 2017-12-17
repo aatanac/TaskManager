@@ -35,9 +35,9 @@ class DBManager {
                 let realm = try! Realm()
                 try! realm.write {
                     realm.add(objects, update: true)
-                }
+                } 
+                completion?(nil)
             }
-            completion?(nil)
         }
     }
 

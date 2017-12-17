@@ -11,6 +11,11 @@ import Foundation
 final class TaskListViewModel: NSObject, ViewModel {
 
     var service: Service = Service.taskLists(projectID: nil)
+    var project: Project
+
+    init(project: Project) {
+        self.project = project
+    }
 
     typealias ItemType = TaskList
 

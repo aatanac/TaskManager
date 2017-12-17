@@ -25,11 +25,6 @@ extension Service: TargetType {
     static let password = "test"
 
     var sampleData: Data {
-        let postData = try? JSONSerialization.data(withJSONObject: self.sampleJson, options: .prettyPrinted)
-        if let data = postData {
-            return data
-        }
-        assertionFailure("Data not valid")
         return Data()
     }
 
@@ -96,51 +91,14 @@ extension Service: TargetType {
             return .requestPlain
         case .projects(params: let params):
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
-        case .tasksEdit(method: _, taskListID: _, params: _):
-            return .requestParameters(parameters: self.sampleJson, encoding: JSONEncoding.default)
+        case .tasksEdit(method: _, taskListID: _, params: let params):
+            return .requestParameters(parameters: params, encoding: JSONEncoding.default)
         case .user:
             return .requestPlain
         case .taskLists(projectID: _):
             // hardcoded for simplicity
             return .requestParameters(parameters: ["status": "active"], encoding: URLEncoding.queryString)
         }
-    }
-
-}
-
-extension Service {
-
-    var sampleJson: [String: Any] {
-        switch self {
-        case .tasksEdit(method: _, taskListID: _, params: _):
-            return
-                ["todo-item": [
-                    "content": "Test Task",
-                    "notify": true,
-                    "description": "Test Task Sub Item",
-                    "due-date": "20140405",
-                    "start-date": "20140402",
-                    "estimated-minutes": "0",
-                    "private": false,
-//                    "grant-access-to": "",
-                    "priority": "low",
-                    "progress": "20",
-                    "attachments": [],
-                    "pendingFileAttachments": "",
-                    "responsible-party-id": "",
-                    "predecessors": [
-                        [
-                            "id": 439492,
-                            "type": "complete"
-                        ]
-                    ],
-                    "tags": "api,documentation",
-                    "positionAfterTask": -1
-                ]]
-        default:
-            return [:]
-        }
-
     }
 
 }

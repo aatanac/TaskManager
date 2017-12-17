@@ -9,6 +9,8 @@
 import Foundation
 import RealmSwift
 
+// simple object that is preserving int value of hc value
+// just for simple use in this app
 class ThemeObject: Object, Codable {
 
     @objc dynamic var id: String = "0"// hc value

@@ -28,8 +28,8 @@ class SplashViewController: UIViewController {
         self.view.backgroundColor = .white
         self.view.addSubview(self.loadingLabel)
         NSLayoutConstraint.activate([
-            // centering label -30, label witdh with one dot is 60
-            self.loadingLabel.leadingAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -30),
+            // centering label -55, label witdh with one dot is 110
+            self.loadingLabel.leadingAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -55),
             self.loadingLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
             ])
 
