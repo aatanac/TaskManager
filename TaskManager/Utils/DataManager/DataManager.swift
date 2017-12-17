@@ -55,16 +55,36 @@ class DataManager {
             }
 
             var tasks: [TaskItem] = []
+            var hasResponse = true
             group.enter()
-            API.request(target: Service.tasks(params: nil), object: Wrapper<TaskItem>.self) { (result) in
-                switch result {
-                case .success(let wrapper):
-                    print("Success")
-                    tasks = wrapper.items
-                case .failure(let error):
-                    responseError = error
+
+            let tasksGroup = DispatchGroup()
+
+            var page = 1
+            while hasResponse {
+                tasksGroup.enter()
+                API.request(target: Service.tasks(params: ["page": page]), object: Wrapper<TaskItem>.self) { (result) in
+                    switch result {
+                    case .success(let wrapper):
+                        print("Success")
+                        if wrapper.items.count > 0 {
+                            tasks.append(contentsOf: wrapper.items)
+                            page += 1
+                            tasksGroup.leave()
+
+                        } else {
+                            hasResponse = false
+                            tasksGroup.leave()
+                            group.leave()
+
+                        }
+
+                    case .failure(let error):
+                        tasksGroup.leave()
+                        responseError = error
+                    }
                 }
-                group.leave()
+                tasksGroup.wait()
             }
 
             group.wait()
@@ -147,8 +167,6 @@ class DataManager {
 
             group.wait()
 
-
-            group.enter()
             DBManager.shared.addObjects(objects: fetchedItems) { (error) in
                 if let er = error {
                     completion?(er)
@@ -156,9 +174,7 @@ class DataManager {
                     completion?(nil)
                 }
             }
-
         }
-
 
     }
 

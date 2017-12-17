@@ -16,13 +16,24 @@ final class TasksViewModel: NSObject, ViewModel {
 
     var service: Service = Service.tasks(params: nil)
 
+    var list: TaskList?
+
     typealias ItemType = TaskItem
 
     var onReloadData: (() -> Void)?
 
-    internal var items: Results<ItemType> = {
-        return DBManager.shared.fetchObjects(objects: ItemType.self, query: nil)
-    }()
+    init(list: TaskList?) {
+        self.list = list
+        if let listValue = list,
+            let intID = Int(listValue.id) {
+            self.items = DBManager.shared.fetchObjects(objects: ItemType.self, query: "todoListId = \(intID)")
+        } else {
+            self.items = DBManager.shared.fetchObjects(objects: ItemType.self, query: nil)
+        }
+        super.init()
+    }
+
+    var items: Results<ItemType>
 
     deinit {
         print("Deinit: ", self)

@@ -89,7 +89,7 @@ final class AppCoordinator: NSObject, RootCoordinator {
 
     // tasks are configured as home or as one of pushed controllers from menu
     private func configureTasksVc() -> NavigationController {
-        let vc = TasksViewController()
+        let vc = TasksViewController(list: nil)
         // take reference of navigation
         self.frontNavigation = self.wrapWithNavVc(vc: vc)
         // returning selected task from controller
@@ -114,6 +114,10 @@ final class AppCoordinator: NSObject, RootCoordinator {
     // tasks are configured as home or as one of pushed controllers from menu
     private func showTaskListVc(project: Project) {
         let vc = TaskListsViewController(project: project)
+        vc.onListSelected = { [weak self] list in
+            let vc = TasksViewController(list: list)
+            self?.frontNavigation.pushViewController(vc, animated: true)
+        }
         // take reference of navigation
         self.frontNavigation.pushViewController(vc, animated: true)
     }

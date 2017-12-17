@@ -45,9 +45,11 @@ class TaskListsViewController: BaseTableViewController {
     }
 
     override func refreshData() {
-
-        self.viewModel.refreshData { [weak self] (_) in
+        self.viewModel.refreshData { [weak self] (error) in
             self?.refreshControl?.endRefreshing()
+            if let er = error {
+                SnackBar.show(type: .error(error: er), onEndAnimation: nil)
+            }
         }
 
     }

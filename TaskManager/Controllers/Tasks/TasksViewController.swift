@@ -10,10 +10,18 @@ import UIKit
 
 final class TasksViewController: BaseTableViewController {
 
-    let viewModel = TasksViewModel()
+    var viewModel: TasksViewModel
 
     var onTaskSelected: ((_ task: TaskItem) -> Void)?
 
+    init(list: TaskList?) {
+        self.viewModel = TasksViewModel(list: list)
+        super.init(style: .plain)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         super.configureUI()
@@ -37,9 +45,11 @@ final class TasksViewController: BaseTableViewController {
     }
 
     override func refreshData() {
-
-        self.viewModel.refreshData { [weak self] (_) in
+        self.viewModel.refreshData { [weak self] (error) in
             self?.refreshControl?.endRefreshing()
+            if let er = error {
+                SnackBar.show(type: .error(error: er), onEndAnimation: nil)
+            }
         }
 
     }
