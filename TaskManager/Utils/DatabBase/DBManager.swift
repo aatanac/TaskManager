@@ -9,9 +9,6 @@
 import Foundation
 import RealmSwift
 
-
-typealias DBBlock = ((Result<Object, Service>) -> Void)
-
 class DBManager {
 
     static let shared = DBManager()
@@ -44,12 +41,13 @@ class DBManager {
         }
     }
 
-    func getObjects<T: Object>(objects: T, query: String, completion: @escaping ((Result<Results<T>, Service>) -> Void)) {
+    func fetchObjects<T: Object>(objects: T, query: String, completion: @escaping ((Result<[T], Service>) -> Void)) {
 
         let realm = try! Realm()
         let result = realm.objects(T.self).filter(query)
-
-        completion(.success(result))
+        let array: [T] = result.flatMap{$0}
+        
+        completion(.success(array))
 
     }
 

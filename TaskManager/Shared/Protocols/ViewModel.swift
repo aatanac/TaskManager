@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import RealmSwift
 
-typealias ErrorBlock = ((ServiceError?) -> Void)
+typealias DataObject = Object & Codable
 
 // resused for Tasks and Projects
 protocol ViewModel: class {
@@ -47,6 +48,22 @@ extension ViewModel {
             }
         }
 
+    }
+
+    func fetchData<T: DataObject>(query: String , object: T, completion: @escaping ((Result<[T], Service>) -> Void)) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+
+        DBManager.shared.fetchObjects(objects: object, query: query) { [weak self] (result) in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+
+            switch result {
+            case .success(let dbItems):
+                break
+                //self?.items = dbItems
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 
 }

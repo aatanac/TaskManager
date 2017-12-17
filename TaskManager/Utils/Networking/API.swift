@@ -10,7 +10,6 @@ import Foundation
 import Moya
 import Alamofire
 
-
 private class NetworkManager: Alamofire.SessionManager {
 
     static let sharedManager: NetworkManager = {

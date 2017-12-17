@@ -8,6 +8,9 @@
 
 import Foundation
 
+typealias ErrorBlock = ((ServiceError?) -> Void)
+
+// used for wrapping consecutive requests
 class DataManager {
 
     static let shared = DataManager()
