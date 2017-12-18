@@ -35,19 +35,7 @@ extension Service: TargetType {
     }
 
     var headers: [String : String]? {
-        let header = ["Content-type": "application/json"]
-        switch self {
-        case .tasks(params: _):
-            return header
-        case .projects(params: _):
-            return header
-        case .tasksEdit(method: _, taskListID: _, params: _):
-            return header
-        case .user:
-            return header
-        case .taskLists(projectID: _, params: _):
-            return header
-        }
+        return ["Content-type": "application/json"]
     }
 
     var baseURL: URL {
@@ -71,15 +59,9 @@ extension Service: TargetType {
 
     var method: Moya.Method {
         switch self {
-        case .tasks(params: _):
-            return Moya.Method.get
-        case .projects(params: _):
-            return Moya.Method.get
         case .tasksEdit(method: let method, taskListID: _, params: _):
             return method
-        case .user:
-            return Moya.Method.get
-        case .taskLists(projectID: _, params: _):
+        default:
             return Moya.Method.get
         }
     }
@@ -87,27 +69,20 @@ extension Service: TargetType {
     var task: Task {
         switch self {
         case .tasks(params: let params):
-            if let parameters = params {
-                return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
-            }
-            return .requestPlain
+            let parameters = params ?? [:]
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .projects(params: let params):
-            if let parameters = params {
-                return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
-            } else {
-                return .requestPlain
-            }
+            let parameters = params ?? [:]
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .tasksEdit(method: _, taskListID: _, params: let params):
             return .requestParameters(parameters: params, encoding: JSONEncoding.default)
         case .user:
-            return .requestPlain
+            return .requestParameters(parameters: [:], encoding: URLEncoding.queryString)
         case .taskLists(projectID: _, params: let params):
-            if let parameters = params {
-                return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
-            } else {
-                return .requestPlain
-            }
+            let parameters = params ?? [:]
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         }
     }
 
-}
+} 
+

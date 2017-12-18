@@ -27,7 +27,6 @@ protocol ViewModel: class {
     // passing item to vc list
     func item(for indexPath: IndexPath) -> ItemType
     // object for listening changes in db
-    // with timeStamp works perfectly
     var token: NotificationToken? { get set }
 
 }

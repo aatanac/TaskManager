@@ -17,7 +17,8 @@ private class NetworkManager: Alamofire.SessionManager {
         configuration.httpAdditionalHeaders = Alamofire.SessionManager.defaultHTTPHeaders
         configuration.timeoutIntervalForRequest = 20
         configuration.timeoutIntervalForResource = 20
-        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+        // timestamp exists
+        configuration.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         return NetworkManager(configuration: configuration)
     }()
 
@@ -26,11 +27,26 @@ private class NetworkManager: Alamofire.SessionManager {
 class API {
     // used for all netwrking calls in
     static func request<T:Codable>(target: Service, object:T.Type,_  completion: @escaping ((Result<T, ServiceError>) -> Void)) {
+
+        // endpoint is created to fetch clear url without appended timestamp
+        let endPoint = Endpoint<Service>(url: URL(target: target).absoluteString, sampleResponseClosure: {.networkResponse(200, target.sampleData)}, method: target.method, task: target.task, httpHeaderFields: target.headers)
+        let urlString = try? endPoint.urlRequest().url?.absoluteString
+        let urlObject = UrlManager.createObject(urlString: urlString ?? nil) // removing double optional
+        let timeStamp = UrlManager.fetchTimeStamp(for: urlObject?.urlString ?? "")
+
         // hc credenitals injected
-        let provider = MoyaProvider<Service>(manager: NetworkManager.sharedManager, plugins: [CredentialsPlugin { _ -> URLCredential? in
+        // injected date to url
+        let provider = MoyaProvider<Service>(endpointClosure: { (target) -> Endpoint<Service> in
+            // appending last timestamp for request
+            let task = target.task.mergerParms(with: ["updatedAfterDate":"\(timeStamp)"])
+            return Endpoint(url: URL(target: target).absoluteString, sampleResponseClosure: {.networkResponse(200, target.sampleData)}, method: target.method, task: task, httpHeaderFields: target.headers)
+        },manager: NetworkManager.sharedManager, plugins: [CredentialsPlugin { _ -> URLCredential? in
             return URLCredential(user: Service.username, password: Service.password, persistence: .none)
             }
         ])
+
+        let urlString2 = try? provider.endpoint(target).urlRequest().url?.absoluteString
+        print(urlString2 ?? nil)
 
         provider.request(target) { (result) in
 
@@ -44,6 +60,12 @@ class API {
                     let decoder = JSONDecoder()
                     decoder.dateDecodingStrategy = .formatted(DateManager.formatter)
                     let value = try decoder.decode(T.self, from: response.data)
+                    print("URL: ", response.request?.url ?? "No url")
+
+                    // saving url with timestamp
+                    if let object = urlObject {
+                        UrlManager.saveObject(object: object)
+                    }
                     return completion(.success(value))
                 } catch let error {
                     return completion(.failure(.error(error)))

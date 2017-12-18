@@ -47,7 +47,9 @@ final class NavigationController: UINavigationController {
             self.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: font]
             self.navigationBar.prefersLargeTitles = true
         }
-        self.setNavigationBarHidden(false, animated: true)
+        self.setNavigationBarHidden(false, animated: false)
+        // disable swipe back, problem with dissapear of search bar
+        self.interactivePopGestureRecognizer?.isEnabled = false
     }
 
     // all configuration of navigationBar is in navigation vc
@@ -65,7 +67,7 @@ final class NavigationController: UINavigationController {
 
         case is TestViewController:
             self.configureBtns(for: vc)
-            vc.title = "Not finished"
+            vc.title = "Development"
 
         case is ColorViewController:
             self.configureBtns(for: vc)
