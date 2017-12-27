@@ -87,7 +87,11 @@ class SnackBar: UIView {
 
         if snackBar.superview == nil {
             self.configure()
+        } else {
+            snackBar.configureUI(by: type)
+            return
         }
+
         snackBar.superview?.bringSubview(toFront: snackBar)
         snackBar.configureUI(by: type)
 

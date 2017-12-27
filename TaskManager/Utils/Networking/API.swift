@@ -45,9 +45,6 @@ class API {
             }
         ])
 
-        let urlString2 = try? provider.endpoint(target).urlRequest().url?.absoluteString
-        print(urlString2 ?? nil)
-
         provider.request(target) { (result) in
 
             switch result {
