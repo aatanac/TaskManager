@@ -33,6 +33,7 @@ class MenuViewController: UIViewController {
     init(type: MenuType) {
         self.viewModel = MenuViewModel(type: type)
         super.init(nibName: nil, bundle: nil)
+        self.subscribeToNotification()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -43,7 +44,6 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         self.configureUI()
         self.configureTableView()
-        self.subscribeToNotification()
     }
 
     private func configureTableView() {
