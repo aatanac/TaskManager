@@ -42,6 +42,7 @@ final class NavigationController: UINavigationController {
 
     private func configureUI() {
         self.navigationBar.isTranslucent = false
+
         if #available(iOS 11.0, *) {
             let font = Font.OpenSans.bold.font(size: 34)
             self.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: font]

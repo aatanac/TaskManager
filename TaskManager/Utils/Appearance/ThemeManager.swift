@@ -40,6 +40,7 @@ class ThemeManager {
         navigationBarAppearace.barTintColor = theme.color
         // navBar items tint color
         navigationBarAppearace.tintColor = theme.barItemsColor
+
         // navBar title color
         navigationBarAppearace.titleTextAttributes = [NSAttributedStringKey.foregroundColor: theme.barItemsColor, NSAttributedStringKey.font: Font.OpenSans.bold.font(size: 16)]
         // searchBar text color
@@ -48,6 +49,7 @@ class ThemeManager {
         UISearchBar.appearance().tintColor = theme.barItemsColor
         // reloading UI depenging on theme
         NotificationCenter.default.post(name: Notification.Name.apllyTheme, object: nil)
+
     }
 
     // wrapping singletone property

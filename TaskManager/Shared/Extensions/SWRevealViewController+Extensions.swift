@@ -12,6 +12,15 @@ extension SWRevealViewController {
 
     func configure() {
         self.frontViewShadowOpacity = 0
+        self.view.backgroundColor = ThemeManager.currentTheme.color
+        self.subscribeToNotification()
+    }
+
+    func subscribeToNotification() {
+        NotificationCenter.default.addObserver(forName: Notification.Name.apllyTheme, object: nil, queue: .main) { [weak self] (_) in
+            let theme = ThemeManager.currentTheme
+            self?.view.backgroundColor = theme.color
+        }
     }
 
 }
